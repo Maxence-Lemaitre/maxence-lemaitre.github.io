@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Maxence Lemaître — Game Designer & Unity Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111113;
+      --bg-card: rgba(255,255,255,0.03);
+      --bg-card-hover: rgba(255,255,255,0.06);
+      --bg-elevated: #1a1a1d;
+      --text: #e8e8e6;
+      --text-secondary: rgba(255,255,255,0.4);
+      --text-muted: rgba(255,255,255,0.25);
+      --text-faint: rgba(255,255,255,0.12);
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
+      --accent: #5DCAA5;
+      --accent-bg: rgba(93,202,165,0.1);
+      --cta: #e8e8e6;
+      --cta-text: #111113;
+      --pill-bg: rgba(255,255,255,0.05);
+      --pill-text: rgba(255,255,255,0.4);
+      --radius: 10px;
+      --radius-sm: 6px;
+      --transition: 200ms ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .nav-links a {
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-back {
+      font-size: 14px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color var(--transition);
+    }
+
+    .nav-back:hover { color: var(--text); }
+
+    .nav-back svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .divider {
+      height: 0.5px;
+      background: var(--border);
+    }
+
+    /* ── View transitions ── */
+    .view {
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+
+    .view.active {
+      opacity: 1;
+    }
+
+    .view.hidden {
+      display: none;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 72px 0 56px;
+    }
+
+    .hero-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 500;
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 440px;
+      margin-bottom: 28px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: opacity var(--transition);
+    }
+
+    .btn:hover { opacity: 0.85; }
+
+    .btn-primary {
+      background: var(--cta);
+      color: var(--cta-text);
+      font-weight: 500;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 0.5px solid var(--border-hover);
+    }
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ── Section headers ── */
+    .section-header {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    /* ── Project grid ── */
+    .projects-section {
+      padding-bottom: 48px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 0.5px solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .project-card:hover {
+      transform: scale(1.02);
+      border-color: var(--border-hover);
+    }
+
+    .project-card-img {
+      height: 160px;
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .project-card-img span {
+      font-size: 12px;
+      color: var(--text-faint);
+    }
+
+    .project-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-card-body {
+      padding: 16px 18px;
+    }
+
+    .project-card-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .project-card-tags {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .project-card-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── Stack ── */
+    .stack-section {
+      padding: 40px 0;
+    }
+
+    .pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 6px 14px;
+      background: var(--pill-bg);
+      color: var(--pill-text);
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 32px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-links svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ── Project detail ── */
+    .project-header {
+      padding: 32px 0 24px;
+    }
+
+    .project-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .tag-status {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+
+    .tag-tech {
+      background: var(--pill-bg);
+      color: var(--pill-text);
+    }
+
+    .project-title {
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .project-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Media area */
+    .media-area {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0a0a0c;
+      border-radius: var(--radius);
+      border: 0.5px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .media-area svg {
+      width: 40px;
+      height: 40px;
+      stroke: var(--text-faint);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .media-area span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .media-area img,
+    .media-area video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+
+    .media-area iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: var(--radius);
+    }
+
+    /* Screenshots */
+    .screenshots {
+      margin-bottom: 32px;
+    }
+
+    .screenshots-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .screenshot {
+      aspect-ratio: 16 / 10;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-sm);
+      border: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--text-faint);
+      cursor: pointer;
+      transition: border-color var(--transition);
+      overflow: hidden;
+    }
+
+    .screenshot:hover {
+      border-color: var(--border-hover);
+    }
+
+    .screenshot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Content layout */
+    .project-content {
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: 32px;
+      padding: 28px 0;
+    }
+
+    .project-about h3,
+    .project-sidebar h3 {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .project-about p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+
+    .project-about p:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .detail-item-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .detail-item-value {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .detail-item-value.status {
+      color: var(--accent);
+    }
+
+    .sidebar-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Other projects */
+    .other-projects {
+      padding: 28px 0;
+    }
+
+    .other-projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .other-card {
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 0.5px solid var(--border);
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color var(--transition);
+    }
+
+    .other-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .other-card-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .other-card-tags {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms ease;
+      cursor: pointer;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 85vh;
+      border-radius: 8px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .hero { padding: 48px 0 40px; }
+      .project-content { grid-template-columns: 1fr; }
+      .screenshots-grid { grid-template-columns: 1fr 1fr; }
+      .other-projects-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 16px; font-size: 12px; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════ HOME VIEW ════════════ -->
+  <div id="view-home" class="view active">
+    <div class="container">
+      <nav class="nav">
+        <span class="nav-logo" onclick="goHome()">Maxence Lemaître</span>
+        <div class="nav-links">
+          <a href="#" onclick="scrollToId('projects'); return false;">Projects</a>
+          <a href="#" onclick="scrollToId('stack'); return false;">Stack</a>
+          <a href="#" onclick="scrollToId('contact'); return false;">Contact</a>
+        </div>
+      </nav>
+      <div class="divider"></div>
+
+      <section class="hero">
+        <p class="hero-label">Game designer & Unity developer</p>
+        <h1 class="hero-title">I design and build<br>game systems.</h1>
+        <p class="hero-desc">
+          Third-year Game Design student at e-artsup Lyon.
+          Systemic gameplay, clean architecture, fast prototyping.
+        </p>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="scrollToId('projects')">View projects</button>
+          <a class="btn btn-secondary" id="cv-btn" href="#" target="_blank" rel="noopener" style="display:none">My CV</a>
+        </div>
+      </section>
+
+      <section class="projects-section" id="projects">
+        <h2 class="section-header">Projects</h2>
+        <div class="projects-grid" id="projects-grid"></div>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="stack-section" id="stack">
+        <h2 class="section-header">Tech stack</h2>
+        <div class="pills">
+          <span class="pill">Unity</span>
+          <span class="pill">C#</span>
+          <span class="pill">Unreal Engine 5</span>
+          <span class="pill">Blender</span>
+          <span class="pill">Photoshop</span>
+          <span class="pill">Premiere Pro</span>
+          <span class="pill">Miro</span>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <footer class="footer" id="contact">
+        <span class="footer-copy">Maxence Lemaître — 2026</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/maxence-lema%C3%AEtre-6ab821339/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://github.com/MaxenceLemaitre69" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="mailto:maxencelemaitre028@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,7 12,13 2,7"/></svg>
+          </a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ════════════ PROJECT DETAIL VIEW ════════════ -->
+  <div id="view-project" class="view hidden">
+    <div class="container">
+      <nav class="nav">
+        <a class="nav-back" onclick="goHome(); return false;" href="#">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
+          Projects
+        </a>
+        <span class="nav-logo" onclick="goHome()" style="cursor:pointer;">Maxence Lemaître</span>
+      </nav>
+      <div class="divider"></div>
+
+      <section class="project-header">
+        <div class="project-tags" id="detail-tags"></div>
+        <h1 class="project-title" id="detail-title"></h1>
+        <p class="project-meta" id="detail-meta"></p>
+      </section>
+
+      <div class="media-area" id="detail-media">
+        <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        <span>Video or build coming soon</span>
+        <button class="btn btn-primary btn-icon" id="detail-play-btn" style="display:none;">
+          <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          Play the game
+        </button>
+      </div>
+
+      <div class="screenshots" id="detail-screenshots">
+        <p class="screenshots-label">Screenshots</p>
+        <div class="screenshots-grid" id="screenshots-grid"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="project-content">
+        <div class="project-about" id="detail-about"></div>
+        <div class="project-sidebar" id="detail-sidebar"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="other-projects">
+        <p class="screenshots-label">Other projects</p>
+        <div class="other-projects-grid" id="other-projects"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <footer class="footer">
+        <span class="footer-copy">Maxence Lemaître — 2026</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/maxence-lema%C3%AEtre-6ab821339/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://github.com/MaxenceLemaitre69" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="mailto:maxencelemaitre028@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,7 12,13 2,7"/></svg>
+          </a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ════════════ Lightbox ════════════ -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">Close</span>
+  </div>
+
+  <script>
+    // ── Project data ──
+    // To add a project: copy one object, fill in the fields.
+    // For images: replace placeholder strings with real paths.
+    // For WebGL: set mediaType to "webgl" and mediaUrl to the build's index.html.
+    // ── Edit these once your itch.io pages and CV are online ──
+    const DEEPINSEA_BUILD_URL = "";   // e.g. "https://yourname.itch.io/deep-in-sea"
+    const VIRUS_BUILD_URL = "";       // e.g. "https://yourname.itch.io/virus"
+    const CV_URL = "";                // e.g. "img/Max_CV_EN.pdf"
+    const projects = [
+  {
+    "id": "deep-in-sea",
+    "title": "Deep in Sea",
+    "tags": [
+      "Unity 6",
+      "C#",
+      "URP",
+      "3D isometric"
+    ],
+    "status": "Playable build",
+    "meta": "Anti-bullying roguelike — team project with an art team",
+    "mediaType": "image",
+    "mediaUrl": "img/web/deepinsea_menu.jpg",
+    "screenshots": [
+      "img/web/deepinsea_boss2.jpg",
+      "img/web/deepinsea_boss3.jpg",
+      "img/web/deepinsea_dialogue.jpg",
+      "img/web/deepinsea_stats.jpg"
+    ],
+    "about": "<h3>About the project</h3>\n<p>A shark-themed isometric roguelike that turns an anti-bullying message into gameplay. You play a shark who is being bullied and face its fears and demons. The ultimate abilities stand for ways of defending yourself, such as shark friends who help you through the trials.</p>\n<p>The team chose an aquatic setting with a lower PEGI target to reach a wider audience. Targets: PC, tablet and PS5.</p>\n<h3>What I built</h3>\n<p>Nine ultimate abilities with a radial cooldown UI. An eight-stat upgrade tree bought with XP (bite damage, swim speed, attack speed, projectile speed, solid scales, leech and more). Boss fights, a dialogue system with NPCs, gold, the options and brightness menus, a death and slow-down sequence, and menu cinematics.</p>\n<p>Audio managers for music, ambience, ultimates and player sounds. A four-tier rarity visual system (Basic, Rare, Epic, Legendary) with material switching, UV scrolling and custom HLSL shaders. Mobile build fixes (safe area, canvas scaling).</p>\n<h3>My role</h3>\n<p>Game developer, game designer, VFX designer and concept maker. I also wrote the art brief for 41 assets (28 3D items, 13 2D assets) with Blender and Unity pipeline specs.</p>",
+    "details": [
+      {
+        "label": "Engine",
+        "value": "Unity 6 (URP, New Input System)"
+      },
+      {
+        "label": "Language",
+        "value": "C#"
+      },
+      {
+        "label": "Platforms",
+        "value": "PC build, tablet and PS5 targeted"
+      },
+      {
+        "label": "In-game language",
+        "value": "French"
+      }
+    ],
+    "links": [
+      {
+        "label": "Download the Windows build",
+        "icon": "download",
+        "url": DEEPINSEA_BUILD_URL,
+        "primary": true
+      }
+    ],
+    "cardDesc": "A bullied shark faces its fears in an isometric underwater roguelike with ultimates and a stat tree.",
+    "cardTags": "Unity / C# / Roguelike 3D",
+    "cardImg": "img/web/deepinsea_boss2.jpg"
+  },
+  {
+    "id": "virus",
+    "title": "VIRUS",
+    "tags": [
+      "Unity",
+      "C#",
+      "2D",
+      "Shmup"
+    ],
+    "status": "Playable build v1.0.0",
+    "meta": "Solo project — vertical shoot'em up with a roguelike mutation draft",
+    "mediaType": "image",
+    "mediaUrl": "img/web/virus_draft.jpg",
+    "screenshots": [
+      "img/web/virus_menu.jpg",
+      "img/web/virus_stage1.jpg",
+      "img/web/virus_run.jpg",
+      "img/web/virus_boss.jpg",
+      "img/web/virus_victory.jpg"
+    ],
+    "about": "<h3>About the project</h3>\n<p>A vertical 2D shoot'em up where you play a virus and push through an immune system, from the first barrier to the last organ. Each run is made of eight stages with bosses.</p>\n<p>Between stages you draft one mutation out of three cards. Strong cards add Instability, the price of power: push it too far and the game warns of a collapse. Cards come in rarities and in families, and each one explains its effect in plain words so the biology never blocks the player.</p>\n<h3>What I built</h3>\n<p>The full game loop and menus: new run, how to play, an in-game encyclopedia and a bestiary, plus an 81-node skill tree bought with DNA points earned during runs. The card draft with rerolls and skipping, the Instability system, the body-response gauges (alert, habituation, appearance, fever) and the stage-by-stage onboarding. Mouse, keyboard and gamepad are supported.</p>\n<h3>My role</h3>\n<p>Game design, systems, effects and implementation in Unity and C#. The 2D assets are AI-generated.</p>",
+    "details": [
+      {
+        "label": "Engine",
+        "value": "Unity"
+      },
+      {
+        "label": "Language",
+        "value": "C#"
+      },
+      {
+        "label": "Version",
+        "value": "1.0.0 (2026)"
+      },
+      {
+        "label": "Controls",
+        "value": "Mouse, keyboard, gamepad"
+      },
+      {
+        "label": "In-game language",
+        "value": "French"
+      }
+    ],
+    "links": [
+      {
+        "label": "Download the Windows build",
+        "icon": "download",
+        "url": VIRUS_BUILD_URL,
+        "primary": true
+      }
+    ],
+    "cardDesc": "Play a virus, draft mutations and manage Instability through an eight-stage run.",
+    "cardTags": "Unity / C# / Shmup 2D",
+    "cardImg": "img/web/virus_draft.jpg"
+  },
+  {
+    "id": "tower-defense",
+    "title": "City-builder tower defense",
+    "tags": [
+      "Unity",
+      "C#",
+      "3D"
+    ],
+    "status": "In development",
+    "meta": "End-of-studies team project",
+    "mediaType": "placeholder",
+    "mediaUrl": "",
+    "screenshots": [],
+    "about": "<h3>About the project</h3>\n<p>A 3D tower defense built around an explorable fortified hub city. Exploring by day feeds the defense at night, with in-battle upgrades and permanent progression through the city forge.</p>\n<h3>My role</h3>\n<p>Game design of the core loop and progression systems. More visuals will be added as the team finishes them.</p>",
+    "details": [
+      {
+        "label": "Engine",
+        "value": "Unity"
+      },
+      {
+        "label": "Language",
+        "value": "C#"
+      },
+      {
+        "label": "Type",
+        "value": "Team project"
+      }
+    ],
+    "links": [],
+    "cardDesc": "A 3D tower defense with an explorable fortified hub city. Work in progress.",
+    "cardTags": "Unity / C# / Tower defense 3D",
+    "cardImg": "In development"
+  }
+];
+
+    // ── SVG icon fragments ──
+    const icons = {
+      play: '<svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>',
+      download: '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+      github: '<svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
+      external: '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+    };
+
+    // ── Render home project cards ──
+    function renderHome() {
+      const cv = document.getElementById("cv-btn");
+      if (cv && CV_URL) { cv.href = CV_URL; cv.style.display = ""; }
+      const grid = document.getElementById("projects-grid");
+      grid.innerHTML = projects.map(p => {
+        const isImg = p.cardImg && (p.cardImg.endsWith(".png") || p.cardImg.endsWith(".jpg") || p.cardImg.endsWith(".jpeg") || p.cardImg.endsWith(".webp") || p.cardImg.endsWith(".gif"));
+        const imgContent = isImg
+          ? `<img src="${p.cardImg}" alt="${p.title}" loading="lazy">`
+          : `<span>${p.cardImg}</span>`;
+        return `
+          <div class="project-card" onclick="openProject('${p.id}')">
+            <div class="project-card-img">${imgContent}</div>
+            <div class="project-card-body">
+              <p class="project-card-title">${p.title}</p>
+              <p class="project-card-tags">${p.cardTags}</p>
+              <p class="project-card-desc">${p.cardDesc}</p>
+            </div>
+          </div>`;
+      }).join("");
+    }
+
+    // ── Render project detail ──
+    function renderProject(project) {
+      // Tags
+      const tagsHtml = `<span class="tag tag-status">${project.status}</span>` +
+        project.tags.map(t => `<span class="tag tag-tech">${t}</span>`).join("");
+      document.getElementById("detail-tags").innerHTML = tagsHtml;
+      document.getElementById("detail-title").textContent = project.title;
+      document.getElementById("detail-meta").textContent = project.meta;
+
+      renderMedia(project);
+
+      // Screenshots
+      document.getElementById("detail-screenshots").style.display = project.screenshots.length ? "" : "none";
+      const ssGrid = document.getElementById("screenshots-grid");
+      ssGrid.innerHTML = project.screenshots.map(s => {
+        const isImg = s && (s.endsWith(".png") || s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".webp") || s.endsWith(".gif"));
+        if (isImg) {
+          return `<div class="screenshot" onclick="openLightbox('${s}')"><img src="${s}" alt="Screenshot" loading="lazy"></div>`;
+        }
+        return `<div class="screenshot">${s}</div>`;
+      }).join("");
+
+      // About
+      document.getElementById("detail-about").innerHTML = project.about;
+
+      // Sidebar
+      const sidebar = document.getElementById("detail-sidebar");
+      const detailsHtml = `<h3>Details</h3><div class="detail-list">` +
+        project.details.map(d =>
+          `<div><p class="detail-item-label">${d.label}</p><p class="detail-item-value">${d.value}</p></div>`
+        ).join("") +
+        `<div><p class="detail-item-label">Status</p><p class="detail-item-value status">${project.status}</p></div></div>`;
+
+      const liveLinks = project.links.filter(l => l.url);
+      const linksHtml = liveLinks.length > 0
+        ? `<div class="sidebar-buttons">` + liveLinks.map(l =>
+            `<a href="${l.url}" target="_blank" rel="noopener" class="btn ${l.primary ? 'btn-primary' : 'btn-secondary'} btn-icon">
+              ${icons[l.icon] || ''}${l.label}
+            </a>`
+          ).join("") + `</div>`
+        : "";
+
+      sidebar.innerHTML = detailsHtml + linksHtml;
+
+      // Other projects
+      const others = projects.filter(p => p.id !== project.id);
+      document.getElementById("other-projects").innerHTML = others.map(p => `
+        <div class="other-card" onclick="openProject('${p.id}')">
+          <p class="other-card-title">${p.title}</p>
+          <p class="other-card-tags">${p.cardTags}</p>
+        </div>
+      `).join("");
+    }
+
+    // ── Navigation ──
+    function switchView(showId) {
+      const allViews = document.querySelectorAll(".view");
+
+      allViews.forEach(v => {
+        if (v.classList.contains("active")) {
+          v.classList.remove("active");
+          setTimeout(() => {
+            v.classList.add("hidden");
+            const target = document.getElementById(showId);
+            target.classList.remove("hidden");
+            requestAnimationFrame(() => {
+              target.classList.add("active");
+            });
+          }, 300);
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    function openProject(id) {
+      const project = projects.find(p => p.id === id);
+      if (!project) return;
+      renderProject(project);
+      window.location.hash = id;
+      switchView("view-project");
+    }
+
+    function goHome() {
+      window.location.hash = "";
+      switchView("view-home");
+    }
+
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // ── Media area rendering ──
+    function renderMedia(project) {
+      const area = document.getElementById("detail-media");
+      if (project.mediaType === "video" && project.mediaUrl) {
+        area.innerHTML = `<video controls preload="metadata" poster="${project.mediaPoster || ''}">
+          <source src="${project.mediaUrl}" type="video/mp4">
+        </video>`;
+      } else if (project.mediaType === "youtube" && project.mediaUrl) {
+        area.innerHTML = `<iframe src="${project.mediaUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      } else if (project.mediaType === "image" && project.mediaUrl) {
+        area.innerHTML = `<img src="${project.mediaUrl}" alt="${project.title}">`;
+      } else if (project.mediaType === "webgl" && project.mediaUrl) {
+        area.innerHTML = `<iframe src="${project.mediaUrl}" allowfullscreen></iframe>`;
+      } else {
+        area.innerHTML = `
+          <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          <span>Video or build coming soon</span>`;
+      }
+    }
+
+    // ── Lightbox ──
+    function openLightbox(src) {
+      const lb = document.getElementById("lightbox");
+      lb.innerHTML = `<span class="lightbox-close">Close</span><img src="${src}" alt="Screenshot">`;
+      lb.classList.add("open");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").classList.remove("open");
+    }
+
+    // ── Hash routing on load ──
+    function handleRoute() {
+      const hash = window.location.hash.replace("#", "");
+      if (hash && projects.find(p => p.id === hash)) {
+        renderHome();
+        const project = projects.find(p => p.id === hash);
+        renderProject(project);
+        document.getElementById("view-home").classList.add("hidden");
+        document.getElementById("view-home").classList.remove("active");
+        const detail = document.getElementById("view-project");
+        detail.classList.remove("hidden");
+        detail.classList.add("active");
+      } else {
+        renderHome();
+      }
+    }
+
+    window.addEventListener("hashchange", () => {
+      const hash = window.location.hash.replace("#", "");
+      if (!hash) {
+        switchView("view-home");
+      } else {
+        const project = projects.find(p => p.id === hash);
+        if (project) {
+          renderProject(project);
+          switchView("view-project");
+        }
+      }
+    });
+
+    handleRoute();
+  </script>
+</body>
+</html>
