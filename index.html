@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Maxence Lemaître — Game Designer & Unity Developer</title>
+  <title>Maxence Lemaître | Game Designer & Unity Developer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@
       padding: 0 24px;
     }
 
-    /* ── Nav ── */
+    /* Nav */
     .nav {
       padding: 20px 0;
       display: flex;
@@ -107,7 +107,7 @@
       background: var(--border);
     }
 
-    /* ── View transitions ── */
+    /* View transitions */
     .view {
       opacity: 0;
       transition: opacity 300ms ease;
@@ -121,7 +121,7 @@
       display: none;
     }
 
-    /* ── Hero ── */
+    /* Hero */
     .hero {
       padding: 72px 0 56px;
     }
@@ -194,14 +194,14 @@
       stroke-linejoin: round;
     }
 
-    /* ── Section headers ── */
+    /* Section headers */
     .section-header {
       font-size: 13px;
       font-weight: 500;
       margin-bottom: 20px;
     }
 
-    /* ── Project grid ── */
+    /* Project grid */
     .projects-section {
       padding-bottom: 48px;
     }
@@ -268,7 +268,7 @@
       line-height: 1.6;
     }
 
-    /* ── Stack ── */
+    /* Stack */
     .stack-section {
       padding: 40px 0;
     }
@@ -287,7 +287,7 @@
       font-size: 12px;
     }
 
-    /* ── Footer ── */
+    /* Footer */
     .footer {
       padding: 32px 0;
       display: flex;
@@ -322,7 +322,7 @@
       stroke-linejoin: round;
     }
 
-    /* ── Project detail ── */
+    /* Project detail */
     .project-header {
       padding: 32px 0 24px;
     }
@@ -537,7 +537,7 @@
       color: var(--text-muted);
     }
 
-    /* ── Lightbox ── */
+    /* Lightbox */
     .lightbox {
       position: fixed;
       inset: 0;
@@ -572,7 +572,7 @@
       cursor: pointer;
     }
 
-    /* ── Responsive ── */
+    /* Responsive */
     @media (max-width: 640px) {
       .hero { padding: 48px 0 40px; }
       .project-content { grid-template-columns: 1fr; }
@@ -591,7 +591,7 @@
 </head>
 <body>
 
-  <!-- ════════════ HOME VIEW ════════════ -->
+  <!--  HOME VIEW  -->
   <div id="view-home" class="view active">
     <div class="container">
       <nav class="nav">
@@ -640,7 +640,7 @@
       <div class="divider"></div>
 
       <footer class="footer" id="contact">
-        <span class="footer-copy">Maxence Lemaître — 2026</span>
+        <span class="footer-copy">Maxence Lemaître, 2026</span>
         <div class="footer-links">
           <a href="https://www.linkedin.com/in/maxence-lema%C3%AEtre-6ab821339/" target="_blank" rel="noopener" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
@@ -656,7 +656,7 @@
     </div>
   </div>
 
-  <!-- ════════════ PROJECT DETAIL VIEW ════════════ -->
+  <!--  PROJECT DETAIL VIEW  -->
   <div id="view-project" class="view hidden">
     <div class="container">
       <nav class="nav">
@@ -705,7 +705,7 @@
       <div class="divider"></div>
 
       <footer class="footer">
-        <span class="footer-copy">Maxence Lemaître — 2026</span>
+        <span class="footer-copy">Maxence Lemaître, 2026</span>
         <div class="footer-links">
           <a href="https://www.linkedin.com/in/maxence-lema%C3%AEtre-6ab821339/" target="_blank" rel="noopener" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
@@ -721,17 +721,17 @@
     </div>
   </div>
 
-  <!-- ════════════ Lightbox ════════════ -->
+  <!--  Lightbox  -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <span class="lightbox-close">Close</span>
   </div>
 
   <script>
-    // ── Project data ──
+    //  Project data 
     // To add a project: copy one object, fill in the fields.
     // For images: replace placeholder strings with real paths.
     // For WebGL: set mediaType to "webgl" and mediaUrl to the build's index.html.
-    // ── Edit these once your itch.io pages and CV are online ──
+    //  Edit these once your itch.io pages and CV are online 
     const DEEPINSEA_BUILD_URL = "";   // e.g. "https://yourname.itch.io/deep-in-sea"
     const VIRUS_BUILD_URL = "";       // e.g. "https://yourname.itch.io/virus"
     const CV_URL = "";                // e.g. "img/Max_CV_EN.pdf"
@@ -746,7 +746,7 @@
       "3D isometric"
     ],
     "status": "Playable build",
-    "meta": "Anti-bullying roguelike — team project with an art team",
+    "meta": "Anti-bullying roguelike, team project with an art team",
     "mediaType": "image",
     "mediaUrl": "img/web/deepinsea_menu.jpg",
     "screenshots": [
@@ -796,7 +796,7 @@
       "Shmup"
     ],
     "status": "Playable build v1.0.0",
-    "meta": "Solo project — vertical shoot'em up with a roguelike mutation draft",
+    "meta": "Solo project: vertical shoot'em up with a roguelike mutation draft",
     "mediaType": "image",
     "mediaUrl": "img/web/virus_draft.jpg",
     "screenshots": [
@@ -876,7 +876,7 @@
   }
 ];
 
-    // ── SVG icon fragments ──
+    //  SVG icon fragments 
     const icons = {
       play: '<svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>',
       download: '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
@@ -884,7 +884,7 @@
       external: '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
     };
 
-    // ── Render home project cards ──
+    //  Render home project cards 
     function renderHome() {
       const cv = document.getElementById("cv-btn");
       if (cv && CV_URL) { cv.href = CV_URL; cv.style.display = ""; }
@@ -906,7 +906,7 @@
       }).join("");
     }
 
-    // ── Render project detail ──
+    //  Render project detail 
     function renderProject(project) {
       // Tags
       const tagsHtml = `<span class="tag tag-status">${project.status}</span>` +
@@ -960,7 +960,7 @@
       `).join("");
     }
 
-    // ── Navigation ──
+    //  Navigation 
     function switchView(showId) {
       const allViews = document.querySelectorAll(".view");
 
@@ -999,7 +999,7 @@
       if (el) el.scrollIntoView({ behavior: "smooth" });
     }
 
-    // ── Media area rendering ──
+    //  Media area rendering 
     function renderMedia(project) {
       const area = document.getElementById("detail-media");
       if (project.mediaType === "video" && project.mediaUrl) {
@@ -1019,7 +1019,7 @@
       }
     }
 
-    // ── Lightbox ──
+    //  Lightbox 
     function openLightbox(src) {
       const lb = document.getElementById("lightbox");
       lb.innerHTML = `<span class="lightbox-close">Close</span><img src="${src}" alt="Screenshot">`;
@@ -1030,7 +1030,7 @@
       document.getElementById("lightbox").classList.remove("open");
     }
 
-    // ── Hash routing on load ──
+    //  Hash routing on load 
     function handleRoute() {
       const hash = window.location.hash.replace("#", "");
       if (hash && projects.find(p => p.id === hash)) {
