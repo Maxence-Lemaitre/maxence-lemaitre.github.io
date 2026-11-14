@@ -693,6 +693,17 @@
       .js .reveal { opacity: 1 !important; transform: none !important; }
     }
 
+    /* Language switch */
+    .nav-end { display: inline-flex; align-items: center; gap: 14px; }
+    .lang-switch {
+      font-size: 11px; font-weight: 500; letter-spacing: 1px; cursor: pointer;
+      padding: 3px 9px; border-radius: 999px; border: 0.5px solid var(--border-hover);
+      color: var(--text-secondary); transition: color var(--transition), border-color var(--transition);
+    }
+    .lang-switch:hover { color: var(--accent); border-color: var(--accent); }
+    .nav-links .lang-switch { padding: 3px 9px; }
+    .nav-links .lang-switch::after { display: none; }
+
     /* Responsive */
     @media (max-width: 640px) {
       .hero { padding: 48px 0 40px; }
@@ -722,6 +733,7 @@
           <a href="#plugins" onclick="openPlugins(); return false;">Plugins</a>
           <a href="#" onclick="scrollToId('stack'); return false;">Stack</a>
           <a href="#" onclick="scrollToId('contact'); return false;">Contact</a>
+          <a class="lang-switch" data-lang-target="fr.html">FR</a>
         </div>
       </nav>
       <div class="divider"></div>
@@ -800,7 +812,7 @@
           <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
           Projects
         </a>
-        <span class="nav-logo" onclick="goHome()" style="cursor:pointer;">Maxence Lemaître</span>
+        <span class="nav-end"><span class="nav-logo" onclick="goHome()" style="cursor:pointer;">Maxence Lemaître</span><a class="lang-switch" data-lang-target="fr.html">FR</a></span>
       </nav>
       <div class="divider"></div>
 
@@ -865,7 +877,7 @@
           <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
           Home
         </a>
-        <span class="nav-logo" onclick="goHome()" style="cursor:pointer;">Maxence Lemaître</span>
+        <span class="nav-end"><span class="nav-logo" onclick="goHome()" style="cursor:pointer;">Maxence Lemaître</span><a class="lang-switch" data-lang-target="fr.html">FR</a></span>
       </nav>
       <div class="divider"></div>
 
@@ -1540,6 +1552,15 @@
     });
 
     handleRoute();
+
+    // Language switch keeps the current project or plugins page
+    function syncLangLinks() {
+      document.querySelectorAll(".lang-switch").forEach(a => {
+        a.href = a.dataset.langTarget + window.location.hash;
+      });
+    }
+    window.addEventListener("hashchange", syncLangLinks);
+    syncLangLinks();
 
     //  Quiet polish: static counters and soft reveal 
     (function () {

@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>document.documentElement.classList.add('js');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Maxence Lemaître | Game designer et développeur Unity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111113;
+      --bg-card: rgba(255,255,255,0.03);
+      --bg-card-hover: rgba(255,255,255,0.06);
+      --bg-elevated: #1a1a1d;
+      --text: #e8e8e6;
+      --text-secondary: rgba(255,255,255,0.4);
+      --text-muted: rgba(255,255,255,0.25);
+      --text-faint: rgba(255,255,255,0.12);
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
+      --accent: #5DCAA5;
+      --accent-bg: rgba(93,202,165,0.1);
+      --cta: #e8e8e6;
+      --cta-text: #111113;
+      --pill-bg: rgba(255,255,255,0.05);
+      --pill-text: rgba(255,255,255,0.4);
+      --radius: 10px;
+      --radius-sm: 6px;
+      --transition: 200ms ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Nav */
+    .nav {
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .nav-links a {
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-back {
+      font-size: 14px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color var(--transition);
+    }
+
+    .nav-back:hover { color: var(--text); }
+
+    .nav-back svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .divider {
+      height: 0.5px;
+      background: var(--border);
+    }
+
+    /* View transitions */
+    .view {
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+
+    .view.active {
+      opacity: 1;
+    }
+
+    .view.hidden {
+      display: none;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 72px 0 56px;
+    }
+
+    .hero-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 500;
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 440px;
+      margin-bottom: 28px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: opacity var(--transition);
+    }
+
+    .btn:hover { opacity: 0.85; }
+
+    .btn-primary {
+      background: var(--cta);
+      color: var(--cta-text);
+      font-weight: 500;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 0.5px solid var(--border-hover);
+    }
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Section headers */
+    .section-header {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    /* Project grid */
+    .projects-section {
+      padding-bottom: 48px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 0.5px solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .project-card:hover {
+      transform: scale(1.02);
+      border-color: var(--border-hover);
+    }
+
+    .project-card-img {
+      height: 160px;
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .project-card-img span {
+      font-size: 12px;
+      color: var(--text-faint);
+    }
+
+    .project-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-card-body {
+      padding: 16px 18px;
+    }
+
+    .project-card-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .project-card-tags {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .project-card-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Stack */
+    .stack-section {
+      padding: 40px 0;
+    }
+
+    .pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 6px 14px;
+      background: var(--pill-bg);
+      color: var(--pill-text);
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 32px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-links svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Project detail */
+    .project-header {
+      padding: 32px 0 24px;
+    }
+
+    .project-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .tag-status {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+
+    .tag-tech {
+      background: var(--pill-bg);
+      color: var(--pill-text);
+    }
+
+    .project-title {
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .project-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Media area */
+    .media-area {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0a0a0c;
+      border-radius: var(--radius);
+      border: 0.5px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .media-area svg {
+      width: 40px;
+      height: 40px;
+      stroke: var(--text-faint);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .media-area span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .media-area img,
+    .media-area video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+
+    .media-area iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: var(--radius);
+    }
+
+    /* Screenshots */
+    .screenshots {
+      margin-bottom: 32px;
+    }
+
+    .screenshots-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .screenshot {
+      aspect-ratio: 16 / 10;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-sm);
+      border: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--text-faint);
+      cursor: pointer;
+      transition: border-color var(--transition);
+      overflow: hidden;
+    }
+
+    .screenshot:hover {
+      border-color: var(--border-hover);
+    }
+
+    .screenshot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Content layout */
+    .project-content {
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: 32px;
+      padding: 28px 0;
+    }
+
+    .project-about h3,
+    .project-sidebar h3 {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .project-about p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+
+    .project-about p:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .detail-item-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .detail-item-value {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .detail-item-value.status {
+      color: var(--accent);
+    }
+
+    .sidebar-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Other projects */
+    .other-projects {
+      padding: 28px 0;
+    }
+
+    .other-projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .other-card {
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 0.5px solid var(--border);
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color var(--transition);
+    }
+
+    .other-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .other-card-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .other-card-tags {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms ease;
+      cursor: pointer;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 85vh;
+      border-radius: 8px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+
+    /* Plugins view */
+    .plugins-intro { padding: 40px 0 8px; }
+    .plugins-intro h1 { font-size: clamp(22px, 3vw, 28px); font-weight: 500; margin-bottom: 10px; }
+    .plugins-intro p { font-size: 14px; color: var(--text-secondary); max-width: 640px; line-height: 1.75; }
+    .plugin-block { padding: 8px 0 36px; border-bottom: 1px solid var(--border); }
+    .plugin-block:last-child { border-bottom: none; }
+    .plugin-head { padding: 28px 0 4px; }
+    .plugin-name { font-size: 20px; font-weight: 500; margin: 12px 0 6px; }
+    .plugin-summary { font-size: 14px; color: var(--text-secondary); line-height: 1.75; max-width: 680px; }
+    .feature-list { list-style: none; margin: 0 0 20px; padding: 0; }
+    .feature-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.7; padding-left: 16px; position: relative; margin-bottom: 6px; }
+    .feature-list li::before { content: ""; position: absolute; left: 0; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    .plugin-note { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+
+
+    /* ===== Refined, sober layer ===== */
+    html, body { overflow-x: clip; }
+    body {
+      background:
+        radial-gradient(900px 480px at 50% -120px, rgba(93,202,165,0.08), transparent 70%),
+        var(--bg);
+      background-attachment: fixed;
+    }
+
+    /* Glass nav */
+    .nav { position: sticky; top: 0; z-index: 40; padding: 16px 0; }
+    .nav::before {
+      content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw;
+      transform: translateX(-50%);
+      background: rgba(17,17,19,0.72);
+      border-bottom: 0.5px solid var(--border);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo { letter-spacing: 0.3px; }
+    .nav-links a { position: relative; padding: 4px 0; }
+    .nav-links a::after {
+      content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+      background: var(--accent); transform: scaleX(0); transform-origin: left;
+      transition: transform 220ms ease;
+    }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* Hero */
+    .hero { padding: 96px 0 64px; }
+    .hero-label {
+      font-size: 12px; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 18px;
+    }
+    .hero-title {
+      font-size: clamp(34px, 5.5vw, 52px); font-weight: 500;
+      line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 18px;
+    }
+    .hero-title .accent { color: var(--accent); }
+    .hero-desc { font-size: 15px; line-height: 1.75; max-width: 500px; margin-bottom: 32px; }
+    .hero-stats {
+      display: flex; gap: 40px; flex-wrap: wrap;
+      margin-top: 48px; padding-top: 24px; border-top: 0.5px solid var(--border);
+    }
+    .hero-stat strong { display: block; font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
+    .hero-stat span { font-size: 12px; color: var(--text-muted); }
+
+    /* Buttons */
+    .btn { transition: background var(--transition), border-color var(--transition), color var(--transition), opacity var(--transition); }
+    .btn:hover { opacity: 1; }
+    .btn-primary:hover { background: #fff; }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Section headers */
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 12px; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--text-secondary); margin-bottom: 24px;
+    }
+    .section-header::after { content: ""; flex: 1; height: 0.5px; background: var(--border); }
+
+    /* Project cards */
+    .projects-grid { gap: 20px; }
+    .project-card {
+      border-radius: 12px; border: 0.5px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.25);
+      transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+    }
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(93,202,165,0.3);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 16px 40px rgba(0,0,0,0.4);
+    }
+    .project-card-img { height: 180px; position: relative; }
+    .project-card-img img { transition: transform 500ms ease; }
+    .project-card:hover .project-card-img img { transform: scale(1.04); }
+    .project-card-img::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, transparent 60%, rgba(17,17,19,0.5));
+    }
+    .project-card-title { font-size: 15px; }
+    .project-card-tags { color: var(--accent); opacity: 0.85; }
+
+    /* Pills */
+    .pill { border: 0.5px solid var(--border); transition: color var(--transition), border-color var(--transition); }
+    .pill:hover { color: var(--text); border-color: rgba(93,202,165,0.45); }
+
+    /* Footer links */
+    .footer-links a:hover { color: var(--accent); }
+
+    /* Screenshots */
+    .screenshots-grid img { transition: opacity var(--transition); }
+    .screenshots-grid img:hover { opacity: 0.9; }
+
+    /* Soft appearance on scroll (only when JS is on) */
+    .js .reveal { opacity: 0; transform: translateY(10px); transition: opacity 450ms ease, transform 450ms ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+    .js .project-card.reveal.in { transition: opacity 450ms ease, transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js .reveal { opacity: 1 !important; transform: none !important; }
+    }
+
+    /* Language switch */
+    .nav-end { display: inline-flex; align-items: center; gap: 14px; }
+    .lang-switch {
+      font-size: 11px; font-weight: 500; letter-spacing: 1px; cursor: pointer;
+      padding: 3px 9px; border-radius: 999px; border: 0.5px solid var(--border-hover);
+      color: var(--text-secondary); transition: color var(--transition), border-color var(--transition);
+    }
+    .lang-switch:hover { color: var(--accent); border-color: var(--accent); }
+    .nav-links .lang-switch { padding: 3px 9px; }
+    .nav-links .lang-switch::after { display: none; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero { padding: 48px 0 40px; }
+      .project-content { grid-template-columns: 1fr; }
+      .screenshots-grid { grid-template-columns: 1fr 1fr; }
+      .other-projects-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 16px; font-size: 12px; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!--  HOME VIEW  -->
+  <div id="view-home" class="view active">
+    <div class="container">
+      <nav class="nav">
+        <span class="nav-logo" onclick="goHome()">Maxence Lemaître</span>
+        <div class="nav-links">
+          <a href="#" onclick="scrollToId('projects'); return false;">Projets</a>
+          <a href="#plugins" onclick="openPlugins(); return false;">Plug-ins</a>
+          <a href="#" onclick="scrollToId('stack'); return false;">Outils</a>
+          <a href="#" onclick="scrollToId('contact'); return false;">Contact</a>
+          <a class="lang-switch" data-lang-target="./">EN</a>
+        </div>
+      </nav>
+      <div class="divider"></div>
+
+      <section class="hero">
+        <p class="hero-label">Game designer &amp; développeur Unity</p>
+        <h1 class="hero-title">Je conçois et je construis<br><span class="accent">des systèmes de jeu.</span></h1>
+        <p class="hero-desc">
+          Étudiant en 3e année de Game Design à l'e-artsup Lyon.
+          Gameplay systémique, architecture propre, prototypage rapide.
+          À la recherche d'un poste en game design, level design ou programmation gameplay.
+        </p>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="scrollToId('projects')">Voir les projets</button>
+          <a class="btn btn-secondary" id="cv-btn" href="#" target="_blank" rel="noopener" style="display:none">Mon CV</a>
+          <a class="btn btn-secondary btn-icon" href="https://www.linkedin.com/in/maxence-lema%C3%AEtre-6ab821339/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a class="btn btn-secondary btn-icon" href="https://github.com/Maxence-Lemaitre" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong data-from="projects">0</strong><span>Projets de jeu</span></div>
+          <div class="hero-stat"><strong data-from="plugins">0</strong><span>Plug-ins Unity</span></div>
+          <div class="hero-stat"><strong>3e</strong><span>Année à l'e-artsup</span></div>
+        </div>
+      </section>
+
+      <section class="projects-section" id="projects">
+        <h2 class="section-header">Projets</h2>
+        <div class="projects-grid" id="projects-grid"></div>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="stack-section" id="stack">
+        <h2 class="section-header">Outils et technologies</h2>
+        <div class="pills">
+          <span class="pill">Unity</span>
+          <span class="pill">C#</span>
+          <span class="pill">Unreal Engine 5</span>
+          <span class="pill">Blender</span>
+          <span class="pill">Photoshop</span>
+          <span class="pill">Premiere Pro</span>
+          <span class="pill">Miro</span>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <footer class="footer" id="contact">
+        <span class="footer-copy">Maxence Lemaître, 2026</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/maxence-lema%C3%AEtre-6ab821339/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://github.com/Maxence-Lemaitre" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="mailto:maxencelemaitre028@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,7 12,13 2,7"/></svg>
+          </a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!--  PROJECT DETAIL VIEW  -->
+  <div id="view-project" class="view hidden">
+    <div class="container">
+      <nav class="nav">
+        <a class="nav-back" onclick="goHome(); return false;" href="#">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
+          Projets
+        </a>
+        <span class="nav-end"><span class="nav-logo" onclick="goHome()" style="cursor:pointer;">Maxence Lemaître</span><a class="lang-switch" data-lang-target="./">EN</a></span>
+      </nav>
+      <div class="divider"></div>
+
+      <section class="project-header">
+        <div class="project-tags" id="detail-tags"></div>
+        <h1 class="project-title" id="detail-title"></h1>
+        <p class="project-meta" id="detail-meta"></p>
+      </section>
+
+      <div class="media-area" id="detail-media">
+        <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        <span>Vidéo ou build bientôt disponible</span>
+        <button class="btn btn-primary btn-icon" id="detail-play-btn" style="display:none;">
+          <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          Jouer au jeu
+        </button>
+      </div>
+
+      <div class="screenshots" id="detail-screenshots">
+        <p class="screenshots-label">Captures d'écran</p>
+        <div class="screenshots-grid" id="screenshots-grid"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="project-content">
+        <div class="project-about" id="detail-about"></div>
+        <div class="project-sidebar" id="detail-sidebar"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="other-projects">
+        <p class="screenshots-label">Autres projets</p>
+        <div class="other-projects-grid" id="other-projects"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <footer class="footer">
+        <span class="footer-copy">Maxence Lemaître, 2026</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/maxence-lema%C3%AEtre-6ab821339/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://github.com/Maxence-Lemaitre" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="mailto:maxencelemaitre028@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,7 12,13 2,7"/></svg>
+          </a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!--  PLUGINS VIEW  -->
+  <div id="view-plugins" class="view hidden">
+    <div class="container">
+      <nav class="nav">
+        <a class="nav-back" onclick="goHome(); return false;" href="#">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
+          Accueil
+        </a>
+        <span class="nav-end"><span class="nav-logo" onclick="goHome()" style="cursor:pointer;">Maxence Lemaître</span><a class="lang-switch" data-lang-target="./">EN</a></span>
+      </nav>
+      <div class="divider"></div>
+
+      <section class="plugins-intro">
+        <h1>Plug-ins Unity</h1>
+        <p>Des outils d'éditeur que j'ai écrits en C# pour accélérer le level design, le game design et l'animation dans Unity. Ils sont conçus pour être déposés dans n'importe quel projet.</p>
+      </section>
+
+      <div id="plugins-list"></div>
+
+      <div class="divider"></div>
+
+      <footer class="footer">
+        <span class="footer-copy">Maxence Lemaître, 2026</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/maxence-lema%C3%AEtre-6ab821339/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://github.com/Maxence-Lemaitre" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="mailto:maxencelemaitre028@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,7 12,13 2,7"/></svg>
+          </a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!--  Lightbox  -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">Fermer</span>
+  </div>
+
+  <script>
+    //  Project data 
+    // To add a project: copy one object, fill in the fields.
+    // For images: replace placeholder strings with real paths.
+    // For WebGL: set mediaType to "webgl" and mediaUrl to the build's index.html.
+    //  Edit these once your itch.io pages and CV are online 
+    const DEEPINSEA_BUILD_URL = "";   // e.g. "https://yourname.itch.io/deep-in-sea"
+    const VIRUS_BUILD_URL = "";       // e.g. "https://yourname.itch.io/virus"
+    const DUNGEONDEEP_BUILD_URL = ""; // e.g. "https://yourname.itch.io/dungeon-deep"
+    const CV_URL = "img/CV_Maxence_Lemaitre_FR.pdf";
+    const SOTABLE_REPO_URL = "";      // e.g. "https://github.com/Maxence-Lemaitre/com.maxence.so-table-editor"
+    const AUTORIG_REPO_URL = "";      // e.g. "https://github.com/Maxence-Lemaitre/com.maxence.auto-rig-animator"
+    const EASYTERRAIN_REPO_URL = "";  // e.g. "https://github.com/Maxence-Lemaitre/EasyTerrain"
+
+    //  Plugin data 
+    const plugins = [
+      {
+        "id": "so-table-editor",
+        "name": "SO Table Editor",
+        "version": "0.2.0",
+        "status": "Fonctionnel, v0.2.0",
+        "tags": [
+          "Unity 2021.3+",
+          "C#",
+          "Outil d'éditeur",
+          "MIT"
+        ],
+        "summary": "Modifiez tous les ScriptableObjects d'un même type dans une seule fenêtre de type tableur. Pensé pour les game designers qui équilibrent des dizaines d'ennemis, d'armes, de tours ou d'objets et qui en ont assez d'ouvrir les assets un par un.",
+        "features": [
+          "Un tableau par type : chaque asset du type de ScriptableObject choisi est une ligne.",
+          "Édition directement dans les cellules avec prise en charge complète de l'annulation, plus un panneau Inspector dans la fenêtre pour les listes et les objets imbriqués.",
+          "Structs imbriquées aplaties en colonnes, tri sur n'importe quelle colonne (ordre naturel pour le texte), colonnes masquables et redimensionnables.",
+          "Filtre par nom et par valeur de champ, par exemple goblin hp>50 rank=elite.",
+          "Édition multi-lignes : sélectionnez plusieurs lignes, modifiez une cellule et toutes les lignes sélectionnées reçoivent la valeur, en une seule annulation.",
+          "Création, duplication et repérage des assets sans quitter la fenêtre, et export CSV de ce qui est affiché.",
+          "API publique (ICellDrawer et CellDrawerRegistry) pour brancher ses propres affichages de cellules."
+        ],
+        "usage": [
+          "Ouvrez Tools > SO Table Editor, ou faites un clic droit sur un ScriptableObject et choisissez Open in SO Table Editor.",
+          "Choisissez un type dans la barre d'outils, puis modifiez les cellules directement. Les nombres et le texte sont validés avec Entrée."
+        ],
+        "note": "Inclut un exemple Enemy Example (enum, struct imbriquée, couleur, prefab et liste) pour essayer le tableau tout de suite.",
+        "details": [
+          {
+            "label": "Version",
+            "value": "0.2.0 (octobre 2026)"
+          },
+          {
+            "label": "Unity",
+            "value": "2021.3 ou plus récent"
+          },
+          {
+            "label": "Langage",
+            "value": "C#, environ 3 000 lignes"
+          },
+          {
+            "label": "Paquet",
+            "value": "Paquet UPM, assembly definition Maxence.SOTable.Editor"
+          },
+          {
+            "label": "Licence",
+            "value": "MIT"
+          }
+        ],
+        "repo": SOTABLE_REPO_URL
+      },
+      {
+        "id": "auto-rig-animator",
+        "name": "Auto Rig Animator",
+        "version": "0.4.0",
+        "status": "En construction, phase 4a sur 4",
+        "tags": [
+          "Unity 2021.3+",
+          "C#",
+          "Outil d'éditeur",
+          "MIT"
+        ],
+        "summary": "Riggez un mesh brut en cliquant quelques repères dessus, puis générez un squelette compatible Humanoid et prévisualisez des animations toutes faites, sans quitter l'éditeur Unity.",
+        "features": [
+          "Placement des repères : cliquez environ 20 repères (hanches, colonne, torse, cou, tête, bras, jambes, avec épaules et orteils en option) directement sur le mesh dans la vue Scene. Les repères posés peuvent être déplacés pour les ajuster.",
+          "Squelette et skinning automatique : la hiérarchie d'os est construite à partir des repères, les poids sont calculés et le mesh devient un SkinnedMeshRenderer, le tout en une seule annulation.",
+          "Génération de l'Avatar Humanoid : le mesh et le squelette sont placés sous une nouvelle racine, l'Avatar est construit et enregistré comme asset, et un Animator est ajouté avec l'Avatar assigné.",
+          "Aperçu d'animation : parcourez ou jouez n'importe quel AnimationClip Humanoid sur le rig généré, sans Animator Controller."
+        ],
+        "usage": [
+          "Ouvrez Tools > Auto Rig > Place Landmarks, glissez un mesh brut (à peu près en T-pose) et cliquez chaque repère dans l'ordre indiqué.",
+          "Construisez le squelette, générez l'Avatar Humanoid, puis utilisez Tools > Auto Rig > Preview Animation pour tester des clips."
+        ],
+        "note": "Prochaine étape (phase 4b) : une bibliothèque de clips tout faits et un outil de pose et d'IK pour créer de nouvelles animations. Limites actuelles : le mesh doit être à peu près en T-pose, et les poids de skinning sont un simple mélange par segment le plus proche, donc les articulations peuvent paraître un peu facettées de près.",
+        "details": [
+          {
+            "label": "Version",
+            "value": "0.4.0 (octobre 2026)"
+          },
+          {
+            "label": "Unity",
+            "value": "2021.3 ou plus récent"
+          },
+          {
+            "label": "Langage",
+            "value": "C#, environ 1 300 lignes"
+          },
+          {
+            "label": "Paquet",
+            "value": "Paquet UPM, assembly definition Maxence.AutoRig.Editor"
+          },
+          {
+            "label": "Licence",
+            "value": "MIT"
+          }
+        ],
+        "repo": AUTORIG_REPO_URL
+      },
+      {
+        "id": "easy-terrain",
+        "name": "Easy Terrain",
+        "version": "0.1",
+        "status": "Version préliminaire",
+        "tags": [
+          "Unity 6",
+          "URP",
+          "C#",
+          "Outil d'éditeur"
+        ],
+        "summary": "Une fenêtre et un pinceau Scene pour construire un terrain Unity de A à Z : le créer, générer le relief, peindre les textures, casser la répétition des textures et disperser arbres et herbe. Conçu pour obtenir un paysage crédible en quelques minutes, sans jongler avec les outils de terrain intégrés.",
+        "features": [
+          "Presets de relief (collines, montagnes, plateaux, île, dunes, vallée avec rivière), plus lissage, érosion thermique et aplatissement.",
+          "Peinture automatique des textures pilotée par des règles d'altitude et de pente, stockées dans un profil réutilisable.",
+          "Break Repetition : chaque couche de texture peut recevoir une variante mélangée par du bruit, ou une seconde couche qui apparaît en taches par-dessus, pour masquer le tiling.",
+          "Dispersion automatique des arbres (prefabs) et de l'herbe (texture ou prefabs de mesh) à partir de règles, puis retouches à la main.",
+          "Pinceau Scene à dix modes : monter, creuser, lisser, aplatir, peindre une texture, texture en overlay, ajouter ou effacer de l'herbe, ajouter ou effacer des arbres.",
+          "Ajout de vos propres albedo et normal map au terrain depuis le panneau du pinceau, sans repeindre l'existant.",
+          "Raycast directement sur la heightmap, donc le pinceau fonctionne sans collider de terrain. Annulation complète prise en charge."
+        ],
+        "usage": [
+          "Copiez Assets/EasyTerrain dans le projet, puis ouvrez Tools > Easy Terrain > Ouvrir.",
+          "Créez un profil, créez le terrain, choisissez un preset de relief et générez. Ajoutez des couches de texture avec leurs règles d'altitude et de pente, lancez la peinture automatique, puis dispersez la végétation.",
+          "Activez le pinceau Scene pour les retouches à la main. Maintenez Alt pour naviguer."
+        ],
+        "note": "Le terrain garde le matériau URP Terrain Lit standard, sans shader personnalisé : la cassure de répétition est intégrée à la splatmap. Résolution conseillée : heightmap 513, alphamap 512.",
+        "details": [
+          {
+            "label": "Unity",
+            "value": "Unity 6 (6000.x), URP"
+          },
+          {
+            "label": "Langage",
+            "value": "C#, environ 1 800 lignes réparties en 12 scripts"
+          },
+          {
+            "label": "Structure",
+            "value": "Fenêtre d'éditeur à 5 onglets, pinceau Scene, asset de profil runtime"
+          },
+          {
+            "label": "Interface",
+            "value": "En français"
+          }
+        ],
+        "repo": EASYTERRAIN_REPO_URL
+      }
+    ];
+    const projects = [
+  {
+    "id": "deep-in-sea",
+    "title": "Deep in Sea",
+    "tags": [
+      "Unity 6",
+      "C#",
+      "URP",
+      "3D isométrique"
+    ],
+    "status": "Build jouable",
+    "meta": "Roguelike contre le harcèlement, projet d'équipe avec une équipe d'artistes",
+    "mediaType": "image",
+    "mediaUrl": "img/web/deepinsea_menu.jpg",
+    "screenshots": [
+      "img/web/deepinsea_boss2.jpg",
+      "img/web/deepinsea_boss3.jpg",
+      "img/web/deepinsea_dialogue.jpg",
+      "img/web/deepinsea_stats.jpg",
+      "img/web/deepinsea_pickup.jpg",
+      "img/web/deepinsea_talk.jpg",
+      "img/web/deepinsea_bubbles.jpg",
+      "img/web/deepinsea_attacks.jpg",
+      "img/web/deepinsea_deep.jpg",
+      "img/web/deepinsea_pause.jpg",
+      "img/web/deepinsea_options.jpg"
+    ],
+    "about": "<h3>À propos du projet</h3>\n<p>Un roguelike isométrique sur le thème du requin, qui transforme un message contre le harcèlement en gameplay. Vous incarnez un requin victime de harcèlement qui affronte ses peurs et ses démons. Les capacités ultimes représentent des façons de se défendre, comme des amis requins qui vous aident à traverser les épreuves.</p>\n<p>L'équipe a choisi un décor aquatique avec une cible PEGI plus basse pour toucher un public plus large. Cibles : PC, tablette et PS5.</p>\n<h3>Ce que j'ai construit</h3>\n<p>Neuf capacités ultimes avec une interface de recharge radiale. Un arbre d'amélioration à huit statistiques acheté avec de l'XP (dégâts de morsure, vitesse de nage, vitesse d'attaque, vitesse des projectiles, écailles solides, vol de vie et plus). Des combats de boss, un système de dialogue avec des PNJ, l'or, les menus d'options et de luminosité, une séquence de mort avec ralenti et des cinématiques de menu.</p>\n<p>Des gestionnaires audio pour la musique, l'ambiance, les ultimes et les sons du joueur. Un système visuel de raretés à quatre niveaux (Basic, Rare, Epic, Legendary) avec changement de matériau, défilement d'UV et shaders HLSL personnalisés. Des corrections de build mobile (zone sûre, mise à l'échelle du canvas).</p>\n<h3>Mon rôle</h3>\n<p>Développeur de jeu, game designer, VFX designer et concepteur. J'ai aussi rédigé le brief artistique de 41 assets (28 objets 3D, 13 assets 2D) avec les spécifications de pipeline Blender et Unity.</p>",
+    "details": [
+      {
+        "label": "Moteur",
+        "value": "Unity 6 (URP, New Input System)"
+      },
+      {
+        "label": "Langage",
+        "value": "C#"
+      },
+      {
+        "label": "Plateformes",
+        "value": "Build PC, tablette et PS5 visées"
+      },
+      {
+        "label": "Langue du jeu",
+        "value": "Français"
+      }
+    ],
+    "links": [
+      {
+        "label": "Télécharger le build Windows",
+        "icon": "download",
+        "url": DEEPINSEA_BUILD_URL,
+        "primary": true
+      }
+    ],
+    "cardDesc": "Un requin harcelé affronte ses peurs dans un roguelike isométrique sous-marin avec ultimes et arbre de statistiques.",
+    "cardTags": "Unity / C# / Roguelike 3D",
+    "cardImg": "img/web/deepinsea_boss2.jpg"
+  },
+  {
+    "id": "virus",
+    "title": "VIRUS",
+    "tags": [
+      "Unity",
+      "C#",
+      "2D",
+      "Shmup"
+    ],
+    "status": "Build jouable v1.0.0",
+    "meta": "Projet solo : shoot'em up vertical avec draft de mutations roguelike",
+    "mediaType": "video",
+    "mediaUrl": "img/web/virus_gameplay.mp4",
+    "mediaPoster": "img/web/virus_draft.jpg",
+    "screenshots": [
+      "img/web/virus_menu.jpg",
+      "img/web/virus_stage1.jpg",
+      "img/web/virus_run.jpg",
+      "img/web/virus_mutation.jpg",
+      "img/web/virus_boss.jpg",
+      "img/web/virus_victory.jpg",
+      "img/web/virus_skilltree.jpg",
+      "img/web/virus_skilltree_max.jpg",
+      "img/web/virus_bestiary_neutrophil.jpg",
+      "img/web/virus_bestiary_boss.jpg",
+      "img/web/virus_tuto_play.jpg",
+      "img/web/virus_tuto_virus.jpg"
+    ],
+    "about": "<h3>À propos du projet</h3>\n<p>Un shoot'em up vertical 2D où vous incarnez un virus qui traverse un système immunitaire, de la première barrière au dernier organe. Chaque partie se compose de huit niveaux avec des boss.</p>\n<p>Entre les niveaux, vous choisissez une mutation parmi trois cartes. Les cartes puissantes ajoutent de l'Instabilité, le prix de la puissance : poussez-la trop loin et le jeu annonce un effondrement. Les cartes existent en raretés et en familles, et chacune explique son effet en mots simples pour que la biologie ne bloque jamais le joueur.</p>\n<h3>Ce que j'ai construit</h3>\n<p>La boucle de jeu complète et les menus : nouvelle partie, comment jouer, une encyclopédie et un bestiaire intégrés, ainsi qu'un arbre de compétences à trois branches (Attaque, Survie, Adaptation) acheté avec des points d'ADN gagnés pendant les parties. Le draft de cartes avec relances et passage, le système d'Instabilité, les jauges de réaction du corps (alerte, habituation, apparence, fièvre) et l'introduction progressive niveau par niveau. Souris, clavier et manette sont pris en charge.</p>\n<h3>Mon rôle</h3>\n<p>Game design, systèmes, effets et implémentation sous Unity et C#. Les assets 2D sont générés par IA.</p>",
+    "details": [
+      {
+        "label": "Moteur",
+        "value": "Unity"
+      },
+      {
+        "label": "Langage",
+        "value": "C#"
+      },
+      {
+        "label": "Version",
+        "value": "1.0.0 (2026)"
+      },
+      {
+        "label": "Commandes",
+        "value": "Souris, clavier, manette"
+      },
+      {
+        "label": "Langue du jeu",
+        "value": "Français"
+      }
+    ],
+    "links": [
+      {
+        "label": "Télécharger le build Windows",
+        "icon": "download",
+        "url": VIRUS_BUILD_URL,
+        "primary": true
+      }
+    ],
+    "cardDesc": "Incarnez un virus, choisissez des mutations et gérez l'Instabilité sur huit niveaux.",
+    "cardTags": "Unity / C# / Shmup 2D",
+    "cardImg": "img/web/virus_draft.jpg"
+  },
+  {
+    "id": "dungeon-deep",
+    "title": "Dungeon Deep",
+    "tags": [
+      "Unity",
+      "C#",
+      "3D",
+      "RPG d'action"
+    ],
+    "status": "Prototype jouable",
+    "meta": "Projet solo : dungeon crawler en vue du dessus avec trois classes et des arbres de talents",
+    "mediaType": "video",
+    "mediaUrl": "img/web/dungeondeep_gameplay.mp4",
+    "mediaPoster": "img/web/dd_title.jpg",
+    "screenshots": [
+      "img/web/dd_heroes.jpg",
+      "img/web/dd_explore.jpg",
+      "img/web/dd_room.jpg",
+      "img/web/dd_dark.jpg",
+      "img/web/dd_hall.jpg",
+      "img/web/dd_corridor.jpg",
+      "img/web/dd_enemies.jpg",
+      "img/web/dd_combat.jpg",
+      "img/web/dd_fireball.jpg",
+      "img/web/dd_floor1.jpg",
+      "img/web/dd_map.jpg",
+      "img/web/dd_talents_warrior.jpg",
+      "img/web/dd_talents_archer.jpg",
+      "img/web/dd_talents_mage.jpg",
+      "img/web/dd_pause.jpg",
+      "img/web/dd_controls.jpg",
+      "img/web/dd_options.jpg",
+      "img/web/dd_death.jpg"
+    ],
+    "about": "<h3>À propos du projet</h3>\n<p>Un dungeon crawler 3D en vue du dessus. Vous choisissez un héros et descendez un donjon éclairé à la torche étage par étage, en vous frayant un chemin de salle en salle, en récupérant des clés et en suivant une minimap. Un récapitulatif de partie indique jusqu'où vous êtes descendu, combien d'ennemis vous avez vaincus et combien de temps vous avez tenu.</p>\n<p>Les trois classes se jouent différemment : le Guerrier se bat au corps à corps et utilise la Rage, l'Archer tire à distance avec une capacité de tir multiple, et le Mage lance des sorts de zone comme la boule de feu.</p>\n<h3>Ce que j'ai construit</h3>\n<p>Chaque classe a son propre arbre de talents. Monter de niveau débloque des dons de classe, et dès le niveau 3 on choisit une spécialisation : Berserker, Gardien ou Maître d'armes pour le Guerrier, Chasseur, Assassin ou Pisteur pour l'Archer, Évocation, Abjuration ou Nécromancie pour le Mage. Les points de talent se dépensent ensuite dans cette branche.</p>\n<p>Autour de ce noyau, le jeu propose un écran titre, une sélection du héros, un menu pause, un écran des commandes, des options audio et d'affichage (dont l'aide à la visée et les vibrations pour la manette) et un historique persistant du meilleur étage, des parties jouées et des ennemis vaincus. Souris, clavier et manette sont pris en charge.</p>\n<h3>Mon rôle</h3>\n<p>Game design, systèmes et implémentation sous Unity et C#. Les personnages, les animations et les assets d'environnement viennent de Mixamo et de l'Unity Asset Store.</p>",
+    "details": [
+      {
+        "label": "Moteur",
+        "value": "Unity"
+      },
+      {
+        "label": "Langage",
+        "value": "C#"
+      },
+      {
+        "label": "Assets",
+        "value": "Mixamo, Unity Asset Store"
+      },
+      {
+        "label": "Commandes",
+        "value": "Souris, clavier, manette"
+      },
+      {
+        "label": "Langue du jeu",
+        "value": "Français"
+      }
+    ],
+    "links": [
+      {
+        "label": "Télécharger le build Windows",
+        "icon": "download",
+        "url": DUNGEONDEEP_BUILD_URL,
+        "primary": true
+      }
+    ],
+    "cardDesc": "Choisissez un Guerrier, un Archer ou un Mage et descendez dans un donjon en construisant votre héros avec des arbres de talents.",
+    "cardTags": "Unity / C# / RPG d'action 3D",
+    "cardImg": "img/web/dd_explore.jpg"
+  },
+  {
+    "id": "tower-defense",
+    "title": "City-builder tower defense",
+    "tags": [
+      "Unity",
+      "C#",
+      "3D",
+      "Tech art"
+    ],
+    "status": "En production",
+    "meta": "Projet d'équipe de fin d'études, j'en suis le game director",
+    "mediaType": "video",
+    "mediaUrl": "img/web/towerdefense_gameplay.mp4",
+    "mediaPoster": "img/web/td_world.jpg",
+    "screenshots": [
+      "img/web/td_world.jpg",
+      "img/web/td_gate.jpg",
+      "img/web/td_captain.jpg",
+      "img/web/td_bow.jpg",
+      "img/web/td_wave.jpg",
+      "img/web/td_build.jpg",
+      "img/web/td_towerstats.jpg",
+      "img/web/td_inventory.jpg",
+      "img/web/td_village.jpg",
+      "img/web/td_map.jpg"
+    ],
+    "about": "<h3>À propos du projet</h3>\n<p>Un tower defense 3D construit autour d'un village fortifié explorable qui sert de hub. Vous incarnez un chef de tribu à pied dans une vallée ouverte : vous explorez, récoltez des ressources, améliorez le village et défendez sa porte contre des vagues d'ennemis. L'exploration de jour nourrit la défense de nuit, avec des améliorations en combat et une progression permanente grâce à la forge du village.</p>\n<h3>Ce que fait le jeu</h3>\n<p>Le joueur alterne entre une épée, un arc, un bâton, une hache et une pioche depuis une barre d'accès rapide. Un menu à quatre onglets (Inventaire, Village, Carte, Héros) affiche les statistiques du personnage, les bâtiments du village (caserne, centre d'expédition, ferme, forge, hôtel de ville, mine, scierie) avec leurs niveaux et leur production par minute, une carte du monde zoomable avec légende, et les héros qui peuvent partir en expédition.</p>\n<p>Avant une vague, un mode de construction en vue du dessus permet de placer des défenses comme des casernes, des tours d'archers et des tours de chamans sur les chemins. Chaque tour a un écran de statistiques qui compare les valeurs avant et après une amélioration et permet de lui assigner un héros (feu, glace ou vie). Pendant une vague, la porte a sa propre barre de vie et les ennemis arrivent avec des barres de vie et des chiffres de dégâts.</p>\n<h3>Mon rôle</h3>\n<p>Je suis le game director de ce projet d'équipe. Je conçois et j'implémente une grande partie des mécaniques de jeu et je m'occupe du tech art. J'ai aussi réalisé moi-même le level design, les FX et une grande partie de l'UI. Le jeu est actuellement en production.</p>",
+    "details": [
+      {
+        "label": "Moteur",
+        "value": "Unity"
+      },
+      {
+        "label": "Langage",
+        "value": "C#"
+      },
+      {
+        "label": "Type",
+        "value": "Projet d'équipe"
+      },
+      {
+        "label": "Mes rôles",
+        "value": "Game director, mécaniques de jeu, tech art, level design, FX, UI"
+      },
+      {
+        "label": "Langue du jeu",
+        "value": "Français"
+      }
+    ],
+    "links": [],
+    "cardDesc": "Défendez un village fortifié explorable dans un tower defense 3D. J'en suis le game director.",
+    "cardTags": "Unity / C# / Tower defense 3D",
+    "cardImg": "img/web/td_world.jpg"
+  }
+];
+
+    //  SVG icon fragments 
+    const icons = {
+      play: '<svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>',
+      download: '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+      github: '<svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
+      external: '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+    };
+
+    //  Render home project cards 
+    function renderHome() {
+      const cv = document.getElementById("cv-btn");
+      if (cv && CV_URL) { cv.href = CV_URL; cv.style.display = ""; }
+      const grid = document.getElementById("projects-grid");
+      grid.innerHTML = projects.map(p => {
+        const isImg = p.cardImg && (p.cardImg.endsWith(".png") || p.cardImg.endsWith(".jpg") || p.cardImg.endsWith(".jpeg") || p.cardImg.endsWith(".webp") || p.cardImg.endsWith(".gif"));
+        const imgContent = isImg
+          ? `<img src="${p.cardImg}" alt="${p.title}" loading="lazy">`
+          : `<span>${p.cardImg}</span>`;
+        return `
+          <div class="project-card" onclick="openProject('${p.id}')">
+            <div class="project-card-img">${imgContent}</div>
+            <div class="project-card-body">
+              <p class="project-card-title">${p.title}</p>
+              <p class="project-card-tags">${p.cardTags}</p>
+              <p class="project-card-desc">${p.cardDesc}</p>
+            </div>
+          </div>`;
+      }).join("");
+    }
+
+    //  Render project detail 
+    function renderProject(project) {
+      // Tags
+      const tagsHtml = `<span class="tag tag-status">${project.status}</span>` +
+        project.tags.map(t => `<span class="tag tag-tech">${t}</span>`).join("");
+      document.getElementById("detail-tags").innerHTML = tagsHtml;
+      document.getElementById("detail-title").textContent = project.title;
+      document.getElementById("detail-meta").textContent = project.meta;
+
+      renderMedia(project);
+
+      // Screenshots
+      document.getElementById("detail-screenshots").style.display = project.screenshots.length ? "" : "none";
+      const ssGrid = document.getElementById("screenshots-grid");
+      ssGrid.innerHTML = project.screenshots.map(s => {
+        const isImg = s && (s.endsWith(".png") || s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".webp") || s.endsWith(".gif"));
+        if (isImg) {
+          return `<div class="screenshot" onclick="openLightbox('${s}')"><img src="${s}" alt="Capture d'écran" loading="lazy"></div>`;
+        }
+        return `<div class="screenshot">${s}</div>`;
+      }).join("");
+
+      // About
+      document.getElementById("detail-about").innerHTML = project.about;
+
+      // Sidebar
+      const sidebar = document.getElementById("detail-sidebar");
+      const detailsHtml = `<h3>Détails</h3><div class="detail-list">` +
+        project.details.map(d =>
+          `<div><p class="detail-item-label">${d.label}</p><p class="detail-item-value">${d.value}</p></div>`
+        ).join("") +
+        `<div><p class="detail-item-label">Statut</p><p class="detail-item-value status">${project.status}</p></div></div>`;
+
+      const liveLinks = project.links.filter(l => l.url);
+      const linksHtml = liveLinks.length > 0
+        ? `<div class="sidebar-buttons">` + liveLinks.map(l =>
+            `<a href="${l.url}" target="_blank" rel="noopener" class="btn ${l.primary ? 'btn-primary' : 'btn-secondary'} btn-icon">
+              ${icons[l.icon] || ''}${l.label}
+            </a>`
+          ).join("") + `</div>`
+        : "";
+
+      sidebar.innerHTML = detailsHtml + linksHtml;
+
+      // Other projects
+      const others = projects.filter(p => p.id !== project.id);
+      document.getElementById("other-projects").innerHTML = others.map(p => `
+        <div class="other-card" onclick="openProject('${p.id}')">
+          <p class="other-card-title">${p.title}</p>
+          <p class="other-card-tags">${p.cardTags}</p>
+        </div>
+      `).join("");
+    }
+
+    //  Navigation 
+    function switchView(showId) {
+      const allViews = document.querySelectorAll(".view");
+
+      allViews.forEach(v => {
+        if (v.classList.contains("active")) {
+          v.classList.remove("active");
+          setTimeout(() => {
+            v.classList.add("hidden");
+            const target = document.getElementById(showId);
+            target.classList.remove("hidden");
+            requestAnimationFrame(() => {
+              target.classList.add("active");
+            });
+          }, 300);
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    function openProject(id) {
+      const project = projects.find(p => p.id === id);
+      if (!project) return;
+      renderProject(project);
+      window.location.hash = id;
+      switchView("view-project");
+    }
+
+    //  Plugins view 
+    function renderPlugins() {
+      document.getElementById("plugins-list").innerHTML = plugins.map(pl => {
+        const links = pl.repo
+          ? `<div class="sidebar-buttons"><a href="${pl.repo}" target="_blank" rel="noopener" class="btn btn-primary btn-icon">${icons.github}Voir sur GitHub</a></div>`
+          : "";
+        return `
+        <section class="plugin-block" id="${pl.id}">
+          <div class="plugin-head">
+            <div class="project-tags"><span class="tag tag-status">${pl.status}</span>${pl.tags.map(t => `<span class="tag tag-tech">${t}</span>`).join("")}</div>
+            <h2 class="plugin-name">${pl.name}</h2>
+            <p class="plugin-summary">${pl.summary}</p>
+          </div>
+          <div class="project-content">
+            <div class="project-about">
+              <h3>Ce qu'il fait</h3>
+              <ul class="feature-list">${pl.features.map(f => `<li>${f}</li>`).join("")}</ul>
+              <h3>Comment l'utiliser</h3>
+              <ul class="feature-list">${pl.usage.map(u => `<li>${u}</li>`).join("")}</ul>
+              <p class="plugin-note">${pl.note}</p>
+            </div>
+            <div class="project-sidebar">
+              <h3>Détails</h3>
+              <div class="detail-list">${pl.details.map(d => `<div><p class="detail-item-label">${d.label}</p><p class="detail-item-value">${d.value}</p></div>`).join("")}</div>
+              ${links}
+            </div>
+          </div>
+        </section>`;
+      }).join("");
+    }
+
+    function openPlugins() {
+      renderPlugins();
+      window.location.hash = "plugins";
+      switchView("view-plugins");
+    }
+
+    function goHome() {
+      window.location.hash = "";
+      switchView("view-home");
+    }
+
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+
+    //  Media area rendering 
+    function renderMedia(project) {
+      const area = document.getElementById("detail-media");
+      if (project.mediaType === "video" && project.mediaUrl) {
+        area.innerHTML = `<video controls preload="metadata" poster="${project.mediaPoster || ''}">
+          <source src="${project.mediaUrl}" type="video/mp4">
+        </video>`;
+      } else if (project.mediaType === "youtube" && project.mediaUrl) {
+        area.innerHTML = `<iframe src="${project.mediaUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      } else if (project.mediaType === "image" && project.mediaUrl) {
+        area.innerHTML = `<img src="${project.mediaUrl}" alt="${project.title}">`;
+      } else if (project.mediaType === "webgl" && project.mediaUrl) {
+        area.innerHTML = `<iframe src="${project.mediaUrl}" allowfullscreen></iframe>`;
+      } else {
+        area.innerHTML = `
+          <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          <span>Vidéo ou build bientôt disponible</span>`;
+      }
+    }
+
+    //  Lightbox 
+    function openLightbox(src) {
+      const lb = document.getElementById("lightbox");
+      lb.innerHTML = `<span class="lightbox-close">Fermer</span><img src="${src}" alt="Capture d'écran">`;
+      lb.classList.add("open");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").classList.remove("open");
+    }
+
+    //  Hash routing on load 
+    function handleRoute() {
+      const hash = window.location.hash.replace("#", "");
+      if (hash === "plugins") {
+        renderHome();
+        renderPlugins();
+        document.getElementById("view-home").classList.add("hidden");
+        document.getElementById("view-home").classList.remove("active");
+        const pv = document.getElementById("view-plugins");
+        pv.classList.remove("hidden");
+        pv.classList.add("active");
+      } else if (hash && projects.find(p => p.id === hash)) {
+        renderHome();
+        const project = projects.find(p => p.id === hash);
+        renderProject(project);
+        document.getElementById("view-home").classList.add("hidden");
+        document.getElementById("view-home").classList.remove("active");
+        const detail = document.getElementById("view-project");
+        detail.classList.remove("hidden");
+        detail.classList.add("active");
+      } else {
+        renderHome();
+      }
+    }
+
+    window.addEventListener("hashchange", () => {
+      const hash = window.location.hash.replace("#", "");
+      if (!hash) {
+        switchView("view-home");
+      } else if (hash === "plugins") {
+        renderPlugins();
+        switchView("view-plugins");
+      } else {
+        const project = projects.find(p => p.id === hash);
+        if (project) {
+          renderProject(project);
+          switchView("view-project");
+        }
+      }
+    });
+
+    handleRoute();
+
+    // Language switch keeps the current project or plugins page
+    function syncLangLinks() {
+      document.querySelectorAll(".lang-switch").forEach(a => {
+        a.href = a.dataset.langTarget + window.location.hash;
+      });
+    }
+    window.addEventListener("hashchange", syncLangLinks);
+    syncLangLinks();
+
+    //  Quiet polish: static counters and soft reveal 
+    (function () {
+      document.querySelectorAll("[data-from]").forEach(el => {
+        el.textContent = el.dataset.from === "projects" ? projects.length : plugins.length;
+      });
+
+      const io = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
+        entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+      }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }) : null;
+
+      function tagReveals() {
+        [".projects-grid .project-card", ".plugin-block", ".other-projects-grid > *"].forEach(sel => {
+          document.querySelectorAll(sel).forEach(el => {
+            if (el.dataset.rv) return;
+            el.dataset.rv = "1";
+            el.classList.add("reveal");
+            if (io) io.observe(el); else el.classList.add("in");
+          });
+        });
+      }
+
+      let pending = false;
+      new MutationObserver(() => {
+        if (pending) return;
+        pending = true;
+        requestAnimationFrame(() => { pending = false; tagReveals(); });
+      }).observe(document.body, { childList: true, subtree: true });
+      tagReveals();
+    })();
+  </script>
+</body>
+</html>
