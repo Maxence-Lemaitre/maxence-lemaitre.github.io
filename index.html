@@ -589,210 +589,107 @@
     .plugin-note { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
 
 
-    /* ===== Life & polish layer ===== */
-    :root {
-      --accent-2: #7aa2ff;
-      --accent-3: #c28bff;
-      --glow: rgba(93,202,165,0.35);
-    }
-
-    body { position: relative; overflow-x: hidden; }
-
-    /* Ambient background that follows the page */
-    .ambient {
-      position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
-    }
-    .ambient::before {
-      content: ""; position: absolute; inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
-      background-size: 28px 28px;
-      mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
-      -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
-    }
-    .blob {
-      position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5;
-      will-change: transform;
-    }
-    .blob-a { width: 520px; height: 520px; left: -140px; top: -120px;
-      background: radial-gradient(circle, rgba(93,202,165,0.55), transparent 65%);
-      animation: floatA 18s ease-in-out infinite alternate; }
-    .blob-b { width: 460px; height: 460px; right: -120px; top: 80px;
-      background: radial-gradient(circle, rgba(122,162,255,0.45), transparent 65%);
-      animation: floatB 22s ease-in-out infinite alternate; }
-    .blob-c { width: 420px; height: 420px; left: 35%; top: 520px;
-      background: radial-gradient(circle, rgba(194,139,255,0.30), transparent 65%);
-      animation: floatC 26s ease-in-out infinite alternate; }
-    @keyframes floatA { to { transform: translate(120px, 90px) scale(1.15); } }
-    @keyframes floatB { to { transform: translate(-110px, 140px) scale(1.1); } }
-    @keyframes floatC { to { transform: translate(-90px, -70px) scale(1.2); } }
-
-    /* Cursor spotlight */
-    .spotlight {
-      position: fixed; inset: 0; z-index: -1; pointer-events: none;
-      background: radial-gradient(420px circle at var(--sx, 50%) var(--sy, 20%), rgba(93,202,165,0.09), transparent 70%);
-      transition: background 120ms linear;
-    }
-
-    /* Scroll progress */
-    .progress {
-      position: fixed; top: 0; left: 0; height: 2px; width: 100%; z-index: 60;
-      transform-origin: 0 50%; transform: scaleX(0);
-      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+    /* ===== Refined, sober layer ===== */
+    body {
+      background:
+        radial-gradient(900px 480px at 50% -120px, rgba(93,202,165,0.08), transparent 70%),
+        var(--bg);
+      background-attachment: fixed;
     }
 
     /* Glass nav */
-    .nav {
-      position: sticky; top: 0; z-index: 40;
-      padding: 16px 0;
-    }
+    .nav { position: sticky; top: 0; z-index: 40; padding: 16px 0; }
     .nav::before {
       content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw;
       transform: translateX(-50%);
-      background: rgba(17,17,19,0.6);
+      background: rgba(17,17,19,0.72);
       border-bottom: 0.5px solid var(--border);
-      -webkit-backdrop-filter: blur(14px) saturate(140%);
-      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
     }
-    .nav-logo { display: inline-flex; align-items: center; gap: 10px; }
-    .nav-logo::before {
-      content: ""; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--accent); box-shadow: 0 0 12px var(--accent);
-      animation: pulse 2.4s ease-in-out infinite;
-    }
-    @keyframes pulse { 50% { transform: scale(1.5); opacity: 0.6; } }
+    .nav-logo { letter-spacing: 0.3px; }
     .nav-links a { position: relative; padding: 4px 0; }
     .nav-links a::after {
       content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
       background: var(--accent); transform: scaleX(0); transform-origin: left;
-      transition: transform 250ms ease;
+      transition: transform 220ms ease;
     }
     .nav-links a:hover::after { transform: scaleX(1); }
 
     /* Hero */
-    .hero { padding: 96px 0 72px; position: relative; }
+    .hero { padding: 96px 0 64px; }
     .hero-label {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 12px; border-radius: 999px;
-      background: var(--accent-bg); color: var(--accent);
-      border: 0.5px solid rgba(93,202,165,0.25);
-      font-size: 12px; margin-bottom: 20px;
+      font-size: 12px; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 18px;
     }
-    .hero-label::before {
-      content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
-      animation: pulse 2s ease-in-out infinite;
+    .hero-title {
+      font-size: clamp(34px, 5.5vw, 52px); font-weight: 500;
+      line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 18px;
     }
-    .hero-title { font-size: clamp(34px, 6vw, 56px); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; }
-    .grad-text {
-      background: linear-gradient(100deg, var(--accent), var(--accent-2), var(--accent-3), var(--accent));
-      background-size: 250% 100%;
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      animation: shine 8s linear infinite;
+    .hero-title .accent { color: var(--accent); }
+    .hero-desc { font-size: 15px; line-height: 1.75; max-width: 500px; margin-bottom: 32px; }
+    .hero-stats {
+      display: flex; gap: 40px; flex-wrap: wrap;
+      margin-top: 48px; padding-top: 24px; border-top: 0.5px solid var(--border);
     }
-    @keyframes shine { to { background-position: 250% 0; } }
-    .hero-desc { font-size: 15px; max-width: 480px; }
-    .typed { color: var(--text); border-right: 2px solid var(--accent); padding-right: 3px; animation: caret 0.9s steps(1) infinite; }
-    @keyframes caret { 50% { border-color: transparent; } }
-
-    .hero-stats { display: flex; gap: 28px; margin-top: 40px; flex-wrap: wrap; }
-    .hero-stat strong { display: block; font-size: 26px; font-weight: 500; color: var(--text); }
+    .hero-stat strong { display: block; font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
     .hero-stat span { font-size: 12px; color: var(--text-muted); }
 
     /* Buttons */
-    .btn { transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition); }
-    .btn:hover { transform: translateY(-2px); opacity: 1; }
-    .btn-primary { box-shadow: 0 6px 24px rgba(232,232,230,0.12); }
-    .btn-primary:hover { box-shadow: 0 10px 30px var(--glow); }
+    .btn { transition: background var(--transition), border-color var(--transition), color var(--transition), opacity var(--transition); }
+    .btn:hover { opacity: 1; }
+    .btn-primary:hover { background: #fff; }
     .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
     /* Section headers */
     .section-header {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 14px; letter-spacing: 0.4px; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 14px;
+      font-size: 12px; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--text-secondary); margin-bottom: 24px;
     }
-    .section-header::before {
-      content: ""; width: 18px; height: 2px; border-radius: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    }
+    .section-header::after { content: ""; flex: 1; height: 0.5px; background: var(--border); }
 
     /* Project cards */
-    .projects-grid { gap: 20px; perspective: 1200px; }
+    .projects-grid { gap: 20px; }
     .project-card {
-      position: relative; background: var(--bg-card);
-      transform-style: preserve-3d;
-      transition: transform 180ms ease-out, border-color var(--transition), box-shadow 300ms ease;
-      --mx: 50%; --my: 50%; --rx: 0deg; --ry: 0deg;
+      border-radius: 12px; border: 0.5px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.25);
+      transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
     }
     .project-card:hover {
-      transform: translateY(-6px) rotateX(var(--rx)) rotateY(var(--ry));
-      border-color: rgba(93,202,165,0.35);
-      box-shadow: 0 18px 50px rgba(0,0,0,0.45), 0 0 0 1px rgba(93,202,165,0.08);
+      transform: translateY(-3px);
+      border-color: rgba(93,202,165,0.3);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 16px 40px rgba(0,0,0,0.4);
     }
-    .project-card::after {
-      content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
-      background: radial-gradient(260px circle at var(--mx) var(--my), rgba(255,255,255,0.09), transparent 60%);
-      opacity: 0; transition: opacity 250ms ease;
-    }
-    .project-card:hover::after { opacity: 1; }
-    .project-card-img { position: relative; height: 180px; }
-    .project-card-img img { transition: transform 600ms cubic-bezier(.2,.7,.2,1), filter 400ms ease; }
-    .project-card:hover .project-card-img img { transform: scale(1.08); }
+    .project-card-img { height: 180px; position: relative; }
+    .project-card-img img { transition: transform 500ms ease; }
+    .project-card:hover .project-card-img img { transform: scale(1.04); }
     .project-card-img::after {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(180deg, transparent 55%, rgba(17,17,19,0.55));
-      pointer-events: none;
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, transparent 60%, rgba(17,17,19,0.5));
     }
     .project-card-title { font-size: 15px; }
-    .project-card-tags { color: var(--accent); opacity: 0.8; }
-    .project-card-body { position: relative; }
-    .project-card-body::after {
-      content: ""; position: absolute; right: 20px; top: 22px; width: 7px; height: 7px;
-      border-top: 1.5px solid var(--accent); border-right: 1.5px solid var(--accent);
-      transform: rotate(45deg) translate(-8px, 8px); opacity: 0;
-      transition: opacity 250ms ease, transform 250ms ease;
-    }
-    .project-card:hover .project-card-body::after { opacity: 1; transform: rotate(45deg); }
+    .project-card-tags { color: var(--accent); opacity: 0.85; }
 
     /* Pills */
-    .pill {
-      border: 0.5px solid var(--border);
-      transition: transform var(--transition), color var(--transition), border-color var(--transition), background var(--transition);
-    }
-    .pill:hover { transform: translateY(-3px); color: var(--text); border-color: rgba(93,202,165,0.5); background: var(--accent-bg); }
+    .pill { border: 0.5px solid var(--border); transition: color var(--transition), border-color var(--transition); }
+    .pill:hover { color: var(--text); border-color: rgba(93,202,165,0.45); }
 
     /* Footer links */
-    .footer-links a { transition: color var(--transition), transform var(--transition); }
-    .footer-links a:hover { color: var(--accent); transform: translateY(-3px); }
+    .footer-links a:hover { color: var(--accent); }
 
-    /* Screenshots and plugin blocks */
-    .screenshots-grid img { transition: transform 300ms ease, box-shadow 300ms ease; }
-    .screenshots-grid img:hover { transform: scale(1.03); box-shadow: 0 12px 36px rgba(0,0,0,0.5); }
-    .plugin-block { transition: transform var(--transition); }
-    .plugin-name { background: linear-gradient(90deg, var(--text), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    /* Screenshots */
+    .screenshots-grid img { transition: opacity var(--transition); }
+    .screenshots-grid img:hover { opacity: 0.9; }
 
-    /* Scroll reveal (only when JS is on) */
-    .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0ms); }
+    /* Soft appearance on scroll (only when JS is on) */
+    .js .reveal { opacity: 0; transform: translateY(10px); transition: opacity 450ms ease, transform 450ms ease; }
     .js .reveal.in { opacity: 1; transform: none; }
-    .js .project-card.reveal.in { transition: opacity 700ms ease var(--d, 0ms), transform 180ms ease-out, border-color var(--transition), box-shadow 300ms ease; }
+    .js .project-card.reveal.in { transition: opacity 450ms ease, transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease; }
 
-    /* Hero entrance */
-    .js .hero-label, .js .hero-title, .js .hero-desc, .js .hero .btn-group, .js .hero-stats {
-      opacity: 0; transform: translateY(18px); animation: rise 800ms cubic-bezier(.2,.7,.2,1) forwards;
-    }
-    .js .hero-title { animation-delay: 120ms; }
-    .js .hero-desc { animation-delay: 240ms; }
-    .js .hero .btn-group { animation-delay: 360ms; }
-    .js .hero-stats { animation-delay: 480ms; }
-    @keyframes rise { to { opacity: 1; transform: none; } }
-
-    @media (hover: none) {
-      .project-card:hover { transform: none; }
-      .spotlight { display: none; }
-    }
     @media (prefers-reduced-motion: reduce) {
-      .blob, .grad-text, .typed, .nav-logo::before, .hero-label::before { animation: none !important; }
-      .js .reveal, .js .hero-label, .js .hero-title, .js .hero-desc, .js .hero .btn-group, .js .hero-stats {
-        opacity: 1 !important; transform: none !important; animation: none !important;
-      }
+      .js .reveal { opacity: 1 !important; transform: none !important; }
     }
 
     /* Responsive */
@@ -813,9 +710,6 @@
   </style>
 </head>
 <body>
-  <div class="progress" id="progress"></div>
-  <div class="ambient" aria-hidden="true"><div class="blob blob-a"></div><div class="blob blob-b"></div><div class="blob blob-c"></div></div>
-  <div class="spotlight" id="spotlight" aria-hidden="true"></div>
 
   <!--  HOME VIEW  -->
   <div id="view-home" class="view active">
@@ -833,19 +727,19 @@
 
       <section class="hero">
         <p class="hero-label">Game designer & Unity developer</p>
-        <h1 class="hero-title">I design and build<br><span class="grad-text">game systems.</span></h1>
+        <h1 class="hero-title">I design and build<br><span class="accent">game systems.</span></h1>
         <p class="hero-desc">
           Third-year Game Design student at e-artsup Lyon.
           Systemic gameplay, clean architecture, fast prototyping.
-          Looking for work in <span class="typed" id="typed"></span>
+          Open to work in game design, level design and gameplay programming.
         </p>
         <div class="btn-group">
           <button class="btn btn-primary" onclick="scrollToId('projects')">View projects</button>
           <a class="btn btn-secondary" id="cv-btn" href="#" target="_blank" rel="noopener" style="display:none">My CV</a>
         </div>
         <div class="hero-stats">
-          <div class="hero-stat"><strong data-count-from="projects">0</strong><span>Game projects</span></div>
-          <div class="hero-stat"><strong data-count-from="plugins">0</strong><span>Unity plugins</span></div>
+          <div class="hero-stat"><strong data-from="projects">0</strong><span>Game projects</span></div>
+          <div class="hero-stat"><strong data-from="plugins">0</strong><span>Unity plugins</span></div>
           <div class="hero-stat"><strong>3rd</strong><span>Year at e-artsup</span></div>
         </div>
       </section>
@@ -1009,6 +903,7 @@
     const CV_URL = "";                // e.g. "img/Max_CV_EN.pdf"
     const SOTABLE_REPO_URL = "";      // e.g. "https://github.com/Maxence-Lemaitre/com.maxence.so-table-editor"
     const AUTORIG_REPO_URL = "";      // e.g. "https://github.com/Maxence-Lemaitre/com.maxence.auto-rig-animator"
+    const EASYTERRAIN_REPO_URL = "";  // e.g. "https://github.com/Maxence-Lemaitre/EasyTerrain"
 
     //  Plugin data 
     const plugins = [
@@ -1108,6 +1003,53 @@
           }
         ],
         "repo": AUTORIG_REPO_URL
+      },
+      {
+        "id": "easy-terrain",
+        "name": "Easy Terrain",
+        "version": "0.1",
+        "status": "Early version",
+        "tags": [
+          "Unity 6",
+          "URP",
+          "C#",
+          "Editor tool"
+        ],
+        "summary": "One window and one Scene brush to build a Unity terrain from scratch: create it, generate the relief, paint the textures, break texture repetition and scatter trees and grass. Made to get a believable landscape in minutes, without juggling the built-in terrain tools.",
+        "features": [
+          "Relief presets (Hills, Mountains, Plateaus, Island, Dunes, Valley with river), plus smoothing, thermal erosion and flattening.",
+          "Automatic texture painting driven by altitude and slope rules, stored in a reusable profile asset.",
+          "Break Repetition: each texture layer can get a noise-blended variant, or a second layer that appears in patches on top of it, to hide tiling.",
+          "Scatter trees (prefabs) and grass (texture or mesh prefabs) automatically from rules, then retouch by hand.",
+          "Scene brush with ten modes: raise, dig, smooth, flatten, paint texture, overlay texture, add or erase grass, add or erase trees.",
+          "Add your own albedo and normal map to the terrain from the brush panel, without repainting what is already there.",
+          "Raycast straight on the heightmap, so the brush works without a terrain collider. Full Undo support."
+        ],
+        "usage": [
+          "Copy Assets/EasyTerrain into the project, then open Tools > Easy Terrain > Ouvrir.",
+          "Create a profile, create the terrain, pick a relief preset and generate. Add texture layers with their altitude and slope rules, run the automatic painting, then disperse vegetation.",
+          "Switch on the Scene brush for hand retouching. Hold Alt to navigate."
+        ],
+        "note": "The terrain keeps the standard URP Terrain Lit material with no custom shader: the repetition break is baked into the splatmap. Recommended resolution: heightmap 513, alphamap 512.",
+        "details": [
+          {
+            "label": "Unity",
+            "value": "Unity 6 (6000.x), URP"
+          },
+          {
+            "label": "Language",
+            "value": "C#, about 1,800 lines in 12 scripts"
+          },
+          {
+            "label": "Structure",
+            "value": "Editor window with 5 tabs, Scene brush, runtime profile asset"
+          },
+          {
+            "label": "Interface",
+            "value": "In French"
+          }
+        ],
+        "repo": EASYTERRAIN_REPO_URL
       }
     ];
     const projects = [
@@ -1590,114 +1532,34 @@
 
     handleRoute();
 
-    //  Life & polish effects 
+    //  Quiet polish: static counters and soft reveal 
     (function () {
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const fine = window.matchMedia("(hover: hover)").matches;
+      document.querySelectorAll("[data-from]").forEach(el => {
+        el.textContent = el.dataset.from === "projects" ? projects.length : plugins.length;
+      });
 
-      // Scroll progress bar
-      const bar = document.getElementById("progress");
-      function onScroll() {
-        const h = document.documentElement.scrollHeight - window.innerHeight;
-        bar.style.transform = "scaleX(" + (h > 0 ? Math.min(1, window.scrollY / h) : 0) + ")";
-      }
-      window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
-
-      // Cursor spotlight
-      const spot = document.getElementById("spotlight");
-      if (fine && !reduce) {
-        window.addEventListener("pointermove", e => {
-          spot.style.setProperty("--sx", e.clientX + "px");
-          spot.style.setProperty("--sy", e.clientY + "px");
-        }, { passive: true });
-      }
-
-      // Typed role loop
-      const typedEl = document.getElementById("typed");
-      const roles = ["game design.", "level design.", "gameplay programming."];
-      if (typedEl) {
-        if (reduce) { typedEl.textContent = roles[0]; typedEl.style.borderRight = "none"; }
-        else {
-          let r = 0, c = 0, del = false;
-          (function tick() {
-            const word = roles[r];
-            typedEl.textContent = word.slice(0, c);
-            if (!del && c === word.length) { del = true; return setTimeout(tick, 1600); }
-            if (del && c === 0) { del = false; r = (r + 1) % roles.length; return setTimeout(tick, 350); }
-            c += del ? -1 : 1;
-            setTimeout(tick, del ? 35 : 70);
-          })();
-        }
-      }
-
-      // Count-up numbers
-      function countUp(el, to) {
-        if (reduce) { el.textContent = to; return; }
-        const t0 = performance.now(), dur = 1200;
-        (function step(t) {
-          const k = Math.min(1, (t - t0) / dur);
-          el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3)));
-          if (k < 1) requestAnimationFrame(step);
-        })(t0);
-      }
-      function startCounters() {
-        document.querySelectorAll("[data-count-from], [data-count]").forEach(el => {
-          if (el.dataset.done) return;
-          el.dataset.done = "1";
-          const from = el.dataset.countFrom;
-          const to = from === "projects" ? projects.length : from === "plugins" ? plugins.length : Number(el.dataset.count);
-          setTimeout(() => countUp(el, to), 500);
-        });
-      }
-
-      // Scroll reveal with stagger
       const io = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
         entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
-      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }) : null;
+      }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }) : null;
 
       function tagReveals() {
-        const groups = [".projects-grid .project-card", ".pills .pill", ".section-header", ".plugin-block", ".screenshots-grid img", ".other-projects-grid > *", ".project-content > *"];
-        groups.forEach(sel => {
-          document.querySelectorAll(sel).forEach((el, i) => {
+        [".projects-grid .project-card", ".plugin-block", ".other-projects-grid > *"].forEach(sel => {
+          document.querySelectorAll(sel).forEach(el => {
             if (el.dataset.rv) return;
             el.dataset.rv = "1";
             el.classList.add("reveal");
-            el.style.setProperty("--d", Math.min(i, 8) * 70 + "ms");
             if (io) io.observe(el); else el.classList.add("in");
           });
         });
       }
 
-      // Card tilt and glow
-      document.addEventListener("pointermove", e => {
-        if (!fine || reduce) return;
-        const card = e.target.closest && e.target.closest(".project-card");
-        if (!card) return;
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-        card.style.setProperty("--mx", x * 100 + "%");
-        card.style.setProperty("--my", y * 100 + "%");
-        card.style.setProperty("--ry", (x - 0.5) * 7 + "deg");
-        card.style.setProperty("--rx", (0.5 - y) * 7 + "deg");
-      }, { passive: true });
-      document.addEventListener("pointerout", e => {
-        const card = e.target.closest && e.target.closest(".project-card");
-        if (card && !card.contains(e.relatedTarget)) {
-          card.style.setProperty("--rx", "0deg"); card.style.setProperty("--ry", "0deg");
-        }
-      });
-
-      // Re-tag whenever a view renders new content
       let pending = false;
       new MutationObserver(() => {
         if (pending) return;
         pending = true;
         requestAnimationFrame(() => { pending = false; tagReveals(); });
       }).observe(document.body, { childList: true, subtree: true });
-
       tagReveals();
-      startCounters();
     })();
   </script>
 </body>
