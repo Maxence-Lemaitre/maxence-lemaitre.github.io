@@ -572,6 +572,21 @@
       cursor: pointer;
     }
 
+
+    /* Plugins view */
+    .plugins-intro { padding: 40px 0 8px; }
+    .plugins-intro h1 { font-size: clamp(22px, 3vw, 28px); font-weight: 500; margin-bottom: 10px; }
+    .plugins-intro p { font-size: 14px; color: var(--text-secondary); max-width: 640px; line-height: 1.75; }
+    .plugin-block { padding: 8px 0 36px; border-bottom: 1px solid var(--border); }
+    .plugin-block:last-child { border-bottom: none; }
+    .plugin-head { padding: 28px 0 4px; }
+    .plugin-name { font-size: 20px; font-weight: 500; margin: 12px 0 6px; }
+    .plugin-summary { font-size: 14px; color: var(--text-secondary); line-height: 1.75; max-width: 680px; }
+    .feature-list { list-style: none; margin: 0 0 20px; padding: 0; }
+    .feature-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.7; padding-left: 16px; position: relative; margin-bottom: 6px; }
+    .feature-list li::before { content: ""; position: absolute; left: 0; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    .plugin-note { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+
     /* Responsive */
     @media (max-width: 640px) {
       .hero { padding: 48px 0 40px; }
@@ -598,6 +613,7 @@
         <span class="nav-logo" onclick="goHome()">Maxence Lemaître</span>
         <div class="nav-links">
           <a href="#" onclick="scrollToId('projects'); return false;">Projects</a>
+          <a href="#plugins" onclick="openPlugins(); return false;">Plugins</a>
           <a href="#" onclick="scrollToId('stack'); return false;">Stack</a>
           <a href="#" onclick="scrollToId('contact'); return false;">Contact</a>
         </div>
@@ -721,6 +737,44 @@
     </div>
   </div>
 
+  <!--  PLUGINS VIEW  -->
+  <div id="view-plugins" class="view hidden">
+    <div class="container">
+      <nav class="nav">
+        <a class="nav-back" onclick="goHome(); return false;" href="#">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
+          Home
+        </a>
+        <span class="nav-logo" onclick="goHome()" style="cursor:pointer;">Maxence Lemaître</span>
+      </nav>
+      <div class="divider"></div>
+
+      <section class="plugins-intro">
+        <h1>Unity plugins</h1>
+        <p>Editor tools I wrote in C# to speed up game design and animation work in Unity. Each one is a Unity Package Manager package with its own assembly definition, README, changelog and MIT license.</p>
+      </section>
+
+      <div id="plugins-list"></div>
+
+      <div class="divider"></div>
+
+      <footer class="footer">
+        <span class="footer-copy">Maxence Lemaître, 2026</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/in/maxence-lema%C3%AEtre-6ab821339/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://github.com/Maxence-Lemaitre" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+          <a href="mailto:maxencelemaitre028@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,7 12,13 2,7"/></svg>
+          </a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
   <!--  Lightbox  -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <span class="lightbox-close">Close</span>
@@ -736,6 +790,109 @@
     const VIRUS_BUILD_URL = "";       // e.g. "https://yourname.itch.io/virus"
     const DUNGEONDEEP_BUILD_URL = ""; // e.g. "https://yourname.itch.io/dungeon-deep"
     const CV_URL = "";                // e.g. "img/Max_CV_EN.pdf"
+    const SOTABLE_REPO_URL = "";      // e.g. "https://github.com/Maxence-Lemaitre/com.maxence.so-table-editor"
+    const AUTORIG_REPO_URL = "";      // e.g. "https://github.com/Maxence-Lemaitre/com.maxence.auto-rig-animator"
+
+    //  Plugin data 
+    const plugins = [
+      {
+        "id": "so-table-editor",
+        "name": "SO Table Editor",
+        "version": "0.2.0",
+        "status": "Working, v0.2.0",
+        "tags": [
+          "Unity 2021.3+",
+          "C#",
+          "Editor tool",
+          "MIT"
+        ],
+        "summary": "Edit every ScriptableObject of one type in a single spreadsheet-like window. Made for game designers who balance dozens of enemies, weapons, towers or items and are tired of opening assets one by one.",
+        "features": [
+          "One table per type: every asset of the chosen ScriptableObject type is a row.",
+          "Inline editing with full Undo support, plus an Inspector panel inside the window for lists and nested objects.",
+          "Nested structs flattened into columns, sorting by any column (natural order for text), hiding and resizing columns.",
+          "Filter by name and by field values, for example goblin hp>50 rank=elite.",
+          "Multi-row editing: select several rows, edit one cell and every selected row gets the value, in a single undo step.",
+          "Create, duplicate and ping assets without leaving the window, and export what is visible to CSV.",
+          "Public API (ICellDrawer and CellDrawerRegistry) to plug in custom cell drawers."
+        ],
+        "usage": [
+          "Open Tools > SO Table Editor, or right-click any ScriptableObject asset and choose Open in SO Table Editor.",
+          "Pick a type in the toolbar, then edit cells directly. Numbers and text are committed on Enter."
+        ],
+        "note": "Includes an Enemy Example sample (enum, nested struct, color, prefab and list) to try the table right away.",
+        "details": [
+          {
+            "label": "Version",
+            "value": "0.2.0 (October 2026)"
+          },
+          {
+            "label": "Unity",
+            "value": "2021.3 or newer"
+          },
+          {
+            "label": "Language",
+            "value": "C#, about 3,000 lines"
+          },
+          {
+            "label": "Package",
+            "value": "UPM package, assembly definition Maxence.SOTable.Editor"
+          },
+          {
+            "label": "License",
+            "value": "MIT"
+          }
+        ],
+        "repo": SOTABLE_REPO_URL
+      },
+      {
+        "id": "auto-rig-animator",
+        "name": "Auto Rig Animator",
+        "version": "0.4.0",
+        "status": "In construction, phase 4a of 4",
+        "tags": [
+          "Unity 2021.3+",
+          "C#",
+          "Editor tool",
+          "MIT"
+        ],
+        "summary": "Rig a raw mesh by clicking a handful of landmarks on it, then build a Humanoid-compatible skeleton and preview premade animations on it, without leaving the Unity editor.",
+        "features": [
+          "Landmark placement: click about 20 landmarks (hips, spine, chest, neck, head, arms, legs, with optional shoulders and toes) directly on the mesh in the Scene view. Placed markers can be dragged to adjust them.",
+          "Skeleton and automatic skinning: the bone hierarchy is built from the landmarks, bone weights are computed and the mesh becomes a SkinnedMeshRenderer, all in one undo step.",
+          "Humanoid Avatar generation: the mesh and skeleton are reparented under a new root, the Avatar is built and saved as an asset, and an Animator is added with the Avatar assigned.",
+          "Animation preview: scrub or play any Humanoid AnimationClip on the generated rig, with no Animator Controller needed."
+        ],
+        "usage": [
+          "Open Tools > Auto Rig > Place Landmarks, drag in a raw mesh (roughly in T-pose) and click each landmark in the order shown.",
+          "Build the skeleton, generate the Humanoid Avatar, then use Tools > Auto Rig > Preview Animation to test clips."
+        ],
+        "note": "Next step (phase 4b): a library of premade clips and a pose and IK tool to create new animations. Current limits: the mesh must be roughly in T-pose, and skin weights are a simple nearest-segment blend, so joints can look slightly faceted up close.",
+        "details": [
+          {
+            "label": "Version",
+            "value": "0.4.0 (October 2026)"
+          },
+          {
+            "label": "Unity",
+            "value": "2021.3 or newer"
+          },
+          {
+            "label": "Language",
+            "value": "C#, about 1,300 lines"
+          },
+          {
+            "label": "Package",
+            "value": "UPM package, assembly definition Maxence.AutoRig.Editor"
+          },
+          {
+            "label": "License",
+            "value": "MIT"
+          }
+        ],
+        "repo": AUTORIG_REPO_URL
+      }
+    ];
     const projects = [
   {
     "id": "deep-in-sea",
@@ -1095,6 +1252,43 @@
       switchView("view-project");
     }
 
+    //  Plugins view 
+    function renderPlugins() {
+      document.getElementById("plugins-list").innerHTML = plugins.map(pl => {
+        const links = pl.repo
+          ? `<div class="sidebar-buttons"><a href="${pl.repo}" target="_blank" rel="noopener" class="btn btn-primary btn-icon">${icons.github}View on GitHub</a></div>`
+          : "";
+        return `
+        <section class="plugin-block" id="${pl.id}">
+          <div class="plugin-head">
+            <div class="project-tags"><span class="tag tag-status">${pl.status}</span>${pl.tags.map(t => `<span class="tag tag-tech">${t}</span>`).join("")}</div>
+            <h2 class="plugin-name">${pl.name}</h2>
+            <p class="plugin-summary">${pl.summary}</p>
+          </div>
+          <div class="project-content">
+            <div class="project-about">
+              <h3>What it does</h3>
+              <ul class="feature-list">${pl.features.map(f => `<li>${f}</li>`).join("")}</ul>
+              <h3>How to use it</h3>
+              <ul class="feature-list">${pl.usage.map(u => `<li>${u}</li>`).join("")}</ul>
+              <p class="plugin-note">${pl.note}</p>
+            </div>
+            <div class="project-sidebar">
+              <h3>Details</h3>
+              <div class="detail-list">${pl.details.map(d => `<div><p class="detail-item-label">${d.label}</p><p class="detail-item-value">${d.value}</p></div>`).join("")}</div>
+              ${links}
+            </div>
+          </div>
+        </section>`;
+      }).join("");
+    }
+
+    function openPlugins() {
+      renderPlugins();
+      window.location.hash = "plugins";
+      switchView("view-plugins");
+    }
+
     function goHome() {
       window.location.hash = "";
       switchView("view-home");
@@ -1139,7 +1333,15 @@
     //  Hash routing on load 
     function handleRoute() {
       const hash = window.location.hash.replace("#", "");
-      if (hash && projects.find(p => p.id === hash)) {
+      if (hash === "plugins") {
+        renderHome();
+        renderPlugins();
+        document.getElementById("view-home").classList.add("hidden");
+        document.getElementById("view-home").classList.remove("active");
+        const pv = document.getElementById("view-plugins");
+        pv.classList.remove("hidden");
+        pv.classList.add("active");
+      } else if (hash && projects.find(p => p.id === hash)) {
         renderHome();
         const project = projects.find(p => p.id === hash);
         renderProject(project);
@@ -1157,6 +1359,9 @@
       const hash = window.location.hash.replace("#", "");
       if (!hash) {
         switchView("view-home");
+      } else if (hash === "plugins") {
+        renderPlugins();
+        switchView("view-plugins");
       } else {
         const project = projects.find(p => p.id === hash);
         if (project) {
