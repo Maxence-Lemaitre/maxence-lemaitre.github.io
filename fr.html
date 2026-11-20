@@ -558,10 +558,42 @@
       pointer-events: auto;
     }
 
-    .lightbox img {
-      max-width: 90%;
-      max-height: 85vh;
-      border-radius: 8px;
+    .lightbox-stage {
+      display: flex; align-items: center; justify-content: center;
+      gap: 24px; width: 100%; padding: 0 72px; box-sizing: border-box;
+    }
+    .lightbox-stage img {
+      border-radius: 8px; object-fit: contain; cursor: pointer;
+      transition: opacity 150ms ease;
+    }
+    .lightbox-stage .lb-current {
+      max-width: 62vw; max-height: 85vh; cursor: default; flex: 0 1 auto;
+    }
+    .lightbox-stage .lb-side {
+      width: 14vw; max-height: 40vh; opacity: 0.35; flex: 0 0 auto;
+    }
+    .lightbox-stage .lb-side:hover { opacity: 0.7; }
+    .lb-spacer { width: 14vw; flex: 0 0 auto; }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%; border: 0.5px solid rgba(255,255,255,0.3);
+      background: rgba(0,0,0,0.5); color: #fff; font-size: 22px; line-height: 1;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox-nav:hover { border-color: var(--accent); color: var(--accent); }
+    .lightbox-nav.prev { left: 16px; }
+    .lightbox-nav.next { right: 16px; }
+    .lightbox-count {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.6); font-size: 13px;
+    }
+    @media (max-width: 720px) {
+      .lightbox-stage { padding: 0 12px; }
+      .lightbox-stage .lb-current { max-width: 92vw; }
+      .lightbox-stage .lb-side, .lb-spacer { display: none; }
+      .lightbox-nav { width: 38px; height: 38px; }
+      .lightbox-nav.prev { left: 6px; }
+      .lightbox-nav.next { right: 6px; }
     }
 
     .lightbox-close {
@@ -807,7 +839,6 @@
         <p class="hero-label">Game designer &amp; développeur Unity</p>
         <h1 class="hero-title">Je conçois et je construis<br><span class="accent">des systèmes de jeu.</span></h1>
         <p class="hero-desc">
-          Étudiant en 3e année de Game Design à l'e-artsup Lyon.
           Gameplay systémique, architecture propre, prototypage rapide.
           À la recherche d'un poste en game design, level design ou programmation gameplay.
         </p>
@@ -832,7 +863,6 @@
         <div class="hero-stats">
           <div class="hero-stat"><strong data-from="projects">0</strong><span>Projets de jeu</span></div>
           <div class="hero-stat"><strong data-from="plugins">0</strong><span>Plug-ins Unity</span></div>
-          <div class="hero-stat"><strong>3e</strong><span>Année à l'e-artsup</span></div>
         </div>
       </section>
 
@@ -1567,6 +1597,7 @@
 
       // Screenshots
       document.getElementById("detail-screenshots").style.display = project.screenshots.length ? "" : "none";
+      lightboxImages = project.screenshots.filter(s => s && /\.(png|jpe?g|webp|gif)$/i.test(s));
       const ssGrid = document.getElementById("screenshots-grid");
       ssGrid.innerHTML = project.screenshots.map(s => {
         const isImg = s && (s.endsWith(".png") || s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".webp") || s.endsWith(".gif"));
@@ -1757,15 +1788,67 @@
     }
 
     //  Lightbox 
-    function openLightbox(src) {
+    let lightboxImages = [];
+    let lightboxIndex = 0;
+
+    function renderLightbox() {
       const lb = document.getElementById("lightbox");
-      lb.innerHTML = `<span class="lightbox-close">Fermer</span><img src="${src}" alt="Capture d'écran">`;
-      lb.classList.add("open");
+      const n = lightboxImages.length;
+      const cur = lightboxImages[lightboxIndex];
+      const prev = lightboxImages[(lightboxIndex - 1 + n) % n];
+      const next = lightboxImages[(lightboxIndex + 1) % n];
+      const multi = n > 1;
+      lb.innerHTML =
+        `<span class="lightbox-close">Fermer</span>` +
+        `<div class="lightbox-stage" onclick="event.stopPropagation()">` +
+          (multi ? `<img class="lb-side" src="${prev}" alt="Previous" onclick="stepLightbox(-1)">` : `<span class="lb-spacer"></span>`) +
+          `<img class="lb-current" src="${cur}" alt="Capture d'écran">` +
+          (multi ? `<img class="lb-side" src="${next}" alt="Next" onclick="stepLightbox(1)">` : `<span class="lb-spacer"></span>`) +
+        `</div>` +
+        (multi
+          ? `<button class="lightbox-nav prev" aria-label="Previous image" onclick="event.stopPropagation(); stepLightbox(-1)">&#8249;</button>` +
+            `<button class="lightbox-nav next" aria-label="Next image" onclick="event.stopPropagation(); stepLightbox(1)">&#8250;</button>` +
+            `<span class="lightbox-count">${lightboxIndex + 1} / ${n}</span>`
+          : "");
+    }
+
+    function stepLightbox(delta) {
+      const n = lightboxImages.length;
+      if (n < 2) return;
+      lightboxIndex = (lightboxIndex + delta + n) % n;
+      renderLightbox();
+    }
+
+    function openLightbox(src) {
+      if (!lightboxImages.includes(src)) lightboxImages = [src];
+      lightboxIndex = lightboxImages.indexOf(src);
+      renderLightbox();
+      document.getElementById("lightbox").classList.add("open");
     }
 
     function closeLightbox() {
       document.getElementById("lightbox").classList.remove("open");
     }
+
+    document.addEventListener("keydown", e => {
+      if (!document.getElementById("lightbox").classList.contains("open")) return;
+      if (e.key === "ArrowRight") stepLightbox(1);
+      else if (e.key === "ArrowLeft") stepLightbox(-1);
+      else if (e.key === "Escape") closeLightbox();
+    });
+
+    // Swipe on touch screens
+    (function () {
+      let startX = null;
+      const lb = document.getElementById("lightbox");
+      lb.addEventListener("touchstart", e => { startX = e.touches[0].clientX; }, { passive: true });
+      lb.addEventListener("touchend", e => {
+        if (startX === null) return;
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 50) stepLightbox(dx < 0 ? 1 : -1);
+        startX = null;
+      }, { passive: true });
+    })();
 
     //  Hash routing on load 
     function handleRoute() {
